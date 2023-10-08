@@ -51,14 +51,19 @@ echo "Current directory: ${CURRENT_DIR}"
 # done
 
 # CUDA PartB
-echo "CUDA PartB"
-srun -n 1 --gpus 1 ${CURRENT_DIR}/../../build/src/gpu/cuda_PartB ${CURRENT_DIR}/../../images/Lena-RGB.jpg ${CURRENT_DIR}/../../images/Lena-Smooth-My.jpg
+# echo "CUDA PartB"
+# srun -n 1 --gpus 1 ${CURRENT_DIR}/../../build/src/gpu/cuda_PartB ${CURRENT_DIR}/../../images/Lena-RGB.jpg ${CURRENT_DIR}/../../images/Lena-Smooth-My.jpg
+# echo ""
+
+# echo "CUDA PartB"
+# srun -n 1 --gpus 1 ${CURRENT_DIR}/../../build/src/gpu/cuda_PartB ${CURRENT_DIR}/../../images/20K-RGB.jpg ${CURRENT_DIR}/../../images/20K-Smooth.jpg
+# echo ""
+
+# OpenACC PartB
+echo "OpenACC PartB"
+srun -n 1 --gpus 1 ${CURRENT_DIR}/../../build/src/gpu/openacc_PartB ${CURRENT_DIR}/../../images/Lena-RGB.jpg ${CURRENT_DIR}/../../images/Lena-Smooth-My.jpg
 echo ""
 
-echo "CUDA PartB"
-srun -n 1 --gpus 1 ${CURRENT_DIR}/../../build/src/gpu/cuda_PartB ${CURRENT_DIR}/../../images/20K-RGB.jpg ${CURRENT_DIR}/../../images/20K-Smooth.jpg
+echo "OpenACC PartB"
+srun -n 1 --gpus 1 ${CURRENT_DIR}/../../build/src/gpu/openacc_PartB ${CURRENT_DIR}/../../images/20K-RGB.jpg ${CURRENT_DIR}/../../images/20K-Smooth.jpg
 echo ""
-# # OpenACC PartB
-# echo "OpenACC PartB"
-# srun -n 1 --gpus 1 ${CURRENT_DIR}/../../build/src/gpu/openacc_PartB ${CURRENT_DIR}/../../images/20K-RGB.jpg ${CURRENT_DIR}/../../images/20K-Smooth.jpg
-# echo ""
