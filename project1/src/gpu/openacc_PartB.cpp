@@ -44,15 +44,20 @@ int main(int argc, char **argv)
     }
 
     #pragma acc enter data copyin(filteredImage[0 : width * height* num_channels], \
-                                    buffer[0 : width * height * num_channels])
+                    buffer[0 : width * height * num_channels],\
+                    filter[0: FILTER_SIZE], width, height, num_channels, FILTER_SIZE)
     #pragma acc update device(filteredImage[0 : width * height* num_channels], \
-                                    buffer[0 : width * height * num_channels])
+                    buffer[0 : width * height * num_channels],\
+                    filter[0: FILTER_SIZE], width, height, num_channels, FILTER_SIZE)
 
     auto start_time = std::chrono::high_resolution_clock::now();
 
     #pragma acc parallel present(filteredImage[0 : width * height* num_channels], \
-                                buffer[0 : width * height * num_channels]) \
-            num_gangs(1024)//(groups of threads) //256,1024,2048:35ms  //
+                                buffer[0 : width * height * num_channels],\
+                                filter[0: FILTER_SIZE], width, height, num_channels, FILTER_SIZE) \
+            num_gangs(1024)num_workers(1024)
+            //(groups of threads) //256,1024,2048:35ms  //
+            //num_workers //128: 34ms 512: 34ms 1024:34ms 2048:34ms 4096:34ms 8192:34ms
     {
         #pragma acc loop independent
         for (int h = 1; h < height - 1; h++)
@@ -64,12 +69,11 @@ int main(int argc, char **argv)
                 int sum_r = 0, sum_g = 0, sum_b = 0;
                 int p = (h * width + w) * num_channels;
 
-                // #pragma acc loop
                 for (int i = 0; i < FILTER_SIZE; i++) {
                     int index = ((i/3-1)* width + (i%3-1)) * num_channels + p;
-                    int r = buffer[index];
-                    int g = buffer[index + 1];
-                    int b = buffer[index + 2];
+                    unsigned char r = buffer[index];
+                    unsigned char g = buffer[index + 1];
+                    unsigned char b = buffer[index + 2];
                     sum_r += r * filter[i];
                     sum_g += g * filter[i];
                     sum_b += b * filter[i];
