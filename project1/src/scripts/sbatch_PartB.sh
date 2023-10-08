@@ -32,14 +32,22 @@ echo "Current directory: ${CURRENT_DIR}"
 #   echo ""
 # done
 
-# # Pthread PartB
-# echo "Pthread PartB (Optimized with -O2)"
-# for num_cores in 1 2 4 8 16 32
-# do
-#   echo "Number of cores: $num_cores"
-#   srun -n 1 --cpus-per-task $num_cores ${CURRENT_DIR}/../../build/src/cpu/pthread_PartB ${CURRENT_DIR}/../../images/20K-RGB.jpg ${CURRENT_DIR}/../../images/20K-Smooth.jpg ${num_cores}
-#   echo ""
-# done
+# Pthread PartB
+echo "Pthread PartB (Optimized with -O2)"
+for num_cores in 1 2 4 8 16 32
+do
+  echo "Number of cores: $num_cores"
+  srun -n 1 --cpus-per-task $num_cores ${CURRENT_DIR}/../../build/src/cpu/pthread_PartB ${CURRENT_DIR}/../../images/Lena-RGB.jpg ${CURRENT_DIR}/../../images/Lena-Smooth-My.jpg ${num_cores}
+  echo ""
+done
+
+echo "Pthread PartB (Optimized with -O2)"
+for num_cores in 1 2 4 8 16 32
+do
+  echo "Number of cores: $num_cores"
+  srun -n 1 --cpus-per-task $num_cores ${CURRENT_DIR}/../../build/src/cpu/pthread_PartB ${CURRENT_DIR}/../../images/20K-RGB.jpg ${CURRENT_DIR}/../../images/20K-Smooth.jpg ${num_cores}
+  echo ""
+done
 
 # # OpenMP PartB
 # echo "OpenMP PartB (Optimized with -O2)"
@@ -60,10 +68,10 @@ echo "Current directory: ${CURRENT_DIR}"
 # echo ""
 
 # OpenACC PartB
-echo "OpenACC PartB"
-srun -n 1 --gpus 1 ${CURRENT_DIR}/../../build/src/gpu/openacc_PartB ${CURRENT_DIR}/../../images/Lena-RGB.jpg ${CURRENT_DIR}/../../images/Lena-Smooth-My.jpg
-echo ""
+# echo "OpenACC PartB"
+# srun -n 1 --gpus 1 ${CURRENT_DIR}/../../build/src/gpu/openacc_PartB ${CURRENT_DIR}/../../images/Lena-RGB.jpg ${CURRENT_DIR}/../../images/Lena-Smooth-My.jpg
+# echo ""
 
-echo "OpenACC PartB"
-srun -n 1 --gpus 1 ${CURRENT_DIR}/../../build/src/gpu/openacc_PartB ${CURRENT_DIR}/../../images/20K-RGB.jpg ${CURRENT_DIR}/../../images/20K-Smooth.jpg
-echo ""
+# echo "OpenACC PartB"
+# srun -n 1 --gpus 1 ${CURRENT_DIR}/../../build/src/gpu/openacc_PartB ${CURRENT_DIR}/../../images/20K-RGB.jpg ${CURRENT_DIR}/../../images/20K-Smooth.jpg
+# echo ""
