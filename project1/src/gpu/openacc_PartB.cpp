@@ -55,21 +55,21 @@ int main(int argc, char **argv)
             num_gangs(1024)//(groups of threads) //256,1024,2048:35ms  //
     {
         #pragma acc loop independent
-        for (unsigned short int h = 1; h < height - 1; h++)
+        for (int h = 1; h < height - 1; h++)
         {
 
             #pragma acc loop independent
-            for (unsigned short int w = 1; w < width - 1; w++)
+            for (int w = 1; w < width - 1; w++)
             {
-                unsigned short int sum_r = 0, sum_g = 0, sum_b = 0;
-                unsigned short int p = (h * width + w) * num_channels;
+                int sum_r = 0, sum_g = 0, sum_b = 0;
+                int p = (h * width + w) * num_channels;
 
                 // #pragma acc loop
                 for (int i = 0; i < FILTER_SIZE; i++) {
-                    unsigned short int index = ((i/3-1)* width + (i%3-1)) * num_channels + p;
-                    unsigned short int r = buffer[index];
-                    unsigned short int g = buffer[index + 1];
-                    unsigned short int b = buffer[index + 2];
+                    int index = ((i/3-1)* width + (i%3-1)) * num_channels + p;
+                    int r = buffer[index];
+                    int g = buffer[index + 1];
+                    int b = buffer[index + 2];
                     sum_r += r * filter[i];
                     sum_g += g * filter[i];
                     sum_b += b * filter[i];
