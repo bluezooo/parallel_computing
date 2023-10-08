@@ -17,31 +17,34 @@ int num_channels;
 struct ThreadData {
     unsigned char* input_buffer;
     unsigned char* output_buffer;
-    int start;
-    int end;
+    int start_height;
+    int end_height;
 };
 
 // Function to convert RGB to Grayscale for a portion of the image
 void* smoothing(void* arg) {
     ThreadData* data = reinterpret_cast<ThreadData*>(arg);
     
-    for (int i = data->start; i < data->end; i++) {
-        int sum_r = 0, sum_g = 0, sum_b = 0;
+    for (int h = data->start_height; h < data->end_height; h++){
+        // #pragma acc loop independent
+        for (int w = 1; w < width - 1; w++){
+            int sum_r = 0, sum_g = 0, sum_b = 0;
+            int p = (h * width + w) * num_channels;
 
-        for (int j = 0; j < FILTER_SIZE; j++) {
-            int index = ((j/3-1)* width + (j%3-1)) * num_channels + i;
-            unsigned char r = data->input_buffer[index];
-            unsigned char g = data->input_buffer[index + 1];
-            unsigned char b = data->input_buffer[index + 2];
-            sum_r += r * filter[j];
-            sum_g += g * filter[j];
-            sum_b += b * filter[j];
+            for (int j = 0; j < FILTER_SIZE; j++) {
+                int index = ((j/3-1)* width + (j%3-1)) * num_channels + p;
+                unsigned char r = data->input_buffer[index];
+                unsigned char g = data->input_buffer[index + 1];
+                unsigned char b = data->input_buffer[index + 2];
+                sum_r += r * filter[j];
+                sum_g += g * filter[j];
+                sum_b += b * filter[j];
+            }
+            data->output_buffer[p] = static_cast<unsigned char>(sum_r);
+            data->output_buffer[p+1] = static_cast<unsigned char>(sum_g);
+            data->output_buffer[p+2] = static_cast<unsigned char>(sum_b);
         }
-        data->output_buffer[i] = static_cast<unsigned char>(sum_r);
-        data->output_buffer[i+1] = static_cast<unsigned char>(sum_g);
-        data->output_buffer[i+2] = static_cast<unsigned char>(sum_b);
     }
-
     return nullptr;
 }
 
@@ -69,18 +72,18 @@ int main(int argc, char** argv) {
     width = input_jpeg.width;
     height = input_jpeg.height;
     num_channels = input_jpeg.num_channels;
+
     auto start_time = std::chrono::high_resolution_clock::now();
 
     // int chunk_size = (input_jpeg.width-2) * (input_jpeg.height-2) / num_threads;
-    int h_per_thread = (height-2) / num_threads;
+    int h_per_thread = (height- 2 + num_threads -1) / num_threads;
+    #pragma acc loop
     for (int i = 0; i < num_threads; i++) {
         thread_data[i].input_buffer = input_jpeg.buffer;
         thread_data[i].output_buffer = filteredImage;
-        thread_data[i].start = ((i * h_per_thread +1) * width+1) * num_channels;
-        thread_data[i].end = (i == num_threads - 1) ? \
-                            width * (height -1)*num_channels -1 : \
-                            (((i + 1) * h_per_thread+1) *width -1) * num_channels;
-        // std::cout<<thread_data[i].start<<" "<<thread_data[i].end<<std::endl;
+        thread_data[i].start_height = i * h_per_thread +1;
+        thread_data[i].end_height = (i == num_threads - 1) ? (height-1):\
+                                    (i + 1) * h_per_thread+1;
         pthread_create(&threads[i], nullptr, smoothing, &thread_data[i]);
     }
 
