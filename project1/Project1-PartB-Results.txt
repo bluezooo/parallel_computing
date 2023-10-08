@@ -1,75 +1,75 @@
 Current directory: /nfsmnt/120090246/parallel_computing/project1/src/scripts
-Pthread PartB (Optimized with -O2)
+OpenMP PartB (Optimized with -O2)
 Number of cores: 1
 Input file from: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/Lena-RGB.jpg
 Output file to: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/Lena-Smooth-My.jpg
 Transformation Complete!
-Execution Time: 11 milliseconds
+Execution Time: 14 milliseconds
 
 Number of cores: 2
+Input file from: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/Lena-RGB.jpg
+Output file to: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/Lena-Smooth-My.jpg
+Transformation Complete!
+Execution Time: 12 milliseconds
+
+Number of cores: 4
+Input file from: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/Lena-RGB.jpg
+Output file to: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/Lena-Smooth-My.jpg
+Transformation Complete!
+Execution Time: 12 milliseconds
+
+Number of cores: 8
 Input file from: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/Lena-RGB.jpg
 Output file to: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/Lena-Smooth-My.jpg
 Transformation Complete!
 Execution Time: 9 milliseconds
 
-Number of cores: 4
-Input file from: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/Lena-RGB.jpg
-Output file to: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/Lena-Smooth-My.jpg
-Transformation Complete!
-Execution Time: 5 milliseconds
-
-Number of cores: 8
-Input file from: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/Lena-RGB.jpg
-Output file to: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/Lena-Smooth-My.jpg
-Transformation Complete!
-Execution Time: 3 milliseconds
-
 Number of cores: 16
 Input file from: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/Lena-RGB.jpg
 Output file to: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/Lena-Smooth-My.jpg
 Transformation Complete!
-Execution Time: 2 milliseconds
+Execution Time: 8 milliseconds
 
 Number of cores: 32
 Input file from: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/Lena-RGB.jpg
 Output file to: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/Lena-Smooth-My.jpg
 Transformation Complete!
-Execution Time: 3 milliseconds
+Execution Time: 8 milliseconds
 
-Pthread PartB (Optimized with -O2)
+OpenMP PartB (Optimized with -O2)
 Number of cores: 1
 Input file from: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-RGB.jpg
 Output file to: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-Smooth.jpg
 Transformation Complete!
-Execution Time: 14459 milliseconds
+Execution Time: 11617 milliseconds
 
 Number of cores: 2
 Input file from: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-RGB.jpg
 Output file to: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-Smooth.jpg
 Transformation Complete!
-Execution Time: 12316 milliseconds
+Execution Time: 11660 milliseconds
 
 Number of cores: 4
 Input file from: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-RGB.jpg
 Output file to: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-Smooth.jpg
 Transformation Complete!
-Execution Time: 6206 milliseconds
+Execution Time: 5829 milliseconds
 
 Number of cores: 8
 Input file from: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-RGB.jpg
 Output file to: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-Smooth.jpg
 Transformation Complete!
-Execution Time: 3111 milliseconds
+Execution Time: 2926 milliseconds
 
 Number of cores: 16
 Input file from: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-RGB.jpg
 Output file to: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-Smooth.jpg
 Transformation Complete!
-Execution Time: 1566 milliseconds
+Execution Time: 1480 milliseconds
 
 Number of cores: 32
 Input file from: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-RGB.jpg
 Output file to: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-Smooth.jpg
 Transformation Complete!
-Execution Time: 974 milliseconds
+Execution Time: 790 milliseconds
 
