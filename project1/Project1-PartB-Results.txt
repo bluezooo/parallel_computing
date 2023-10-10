@@ -1,62 +1,15 @@
 Current directory: /nfsmnt/120090246/parallel_computing/project1/src/scripts
-MPI PartB (Optimized with -O2)
-Number of processes: 1
+SIMD(AVX2) PartB (Optimized with -O2)
+Input file from: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/Lena-RGB.jpg
+ended
 Output file to: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/Lena-Smooth-My.jpg
 Transformation Complete!
-Execution Time: 9 milliseconds
+Execution Time: 1 milliseconds
 
-Number of processes: 2
-Output file to: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/Lena-Smooth-My.jpg
-Transformation Complete!
-Execution Time: 5 milliseconds
-
-Number of processes: 4
-Output file to: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/Lena-Smooth-My.jpg
-Transformation Complete!
-Execution Time: 8 milliseconds
-
-Number of processes: 8
-Output file to: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/Lena-Smooth-My.jpg
-Transformation Complete!
-Execution Time: 7 milliseconds
-
-Number of processes: 16
-Output file to: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/Lena-Smooth-My.jpg
-Transformation Complete!
-Execution Time: 5 milliseconds
-
-Number of processes: 32
-Output file to: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/Lena-Smooth-My.jpg
-Transformation Complete!
-Execution Time: 7 milliseconds
-
-Number of processes: 1
+SIMD(AVX2) PartB (Optimized with -O2)
+Input file from: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-RGB.jpg
+ended
 Output file to: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-Smooth.jpg
 Transformation Complete!
-Execution Time: 13500 milliseconds
-
-Number of processes: 2
-Output file to: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-Smooth.jpg
-Transformation Complete!
-Execution Time: 11919 milliseconds
-
-Number of processes: 4
-Output file to: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-Smooth.jpg
-Transformation Complete!
-Execution Time: 6284 milliseconds
-
-Number of processes: 8
-Output file to: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-Smooth.jpg
-Transformation Complete!
-Execution Time: 3325 milliseconds
-
-Number of processes: 16
-Output file to: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-Smooth.jpg
-Transformation Complete!
-Execution Time: 2002 milliseconds
-
-Number of processes: 32
-Output file to: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-Smooth.jpg
-Transformation Complete!
-Execution Time: 1259 milliseconds
+Execution Time: 1508 milliseconds
 
