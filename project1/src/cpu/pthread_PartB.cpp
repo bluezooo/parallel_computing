@@ -24,9 +24,8 @@ struct ThreadData {
 // Function to convert RGB to Grayscale for a portion of the image
 void* smoothing(void* arg) {
     ThreadData* data = reinterpret_cast<ThreadData*>(arg);
-    
+    // #pragma omp parallel for default(none) shared(data, input_jpeg, filter)
     for (int h = data->start_height; h < data->end_height; h++){
-        // #pragma acc loop independent
         for (int w = 1; w < width - 1; w++){
             int sum_r = 0, sum_g = 0, sum_b = 0;
             int p = (h * width + w) * num_channels;
@@ -73,17 +72,18 @@ int main(int argc, char** argv) {
     height = input_jpeg.height;
     num_channels = input_jpeg.num_channels;
 
-    auto start_time = std::chrono::high_resolution_clock::now();
-
-    // int chunk_size = (input_jpeg.width-2) * (input_jpeg.height-2) / num_threads;
     int h_per_thread = (height- 2 + num_threads -1) / num_threads;
-    #pragma acc loop
+
     for (int i = 0; i < num_threads; i++) {
         thread_data[i].input_buffer = input_jpeg.buffer;
         thread_data[i].output_buffer = filteredImage;
         thread_data[i].start_height = i * h_per_thread +1;
-        thread_data[i].end_height = (i == num_threads - 1) ? (height-1):\
-                                    (i + 1) * h_per_thread+1;
+        thread_data[i].end_height = (i == num_threads - 1) ? (height-1):(i + 1) * h_per_thread+1;
+    }
+
+    
+    auto start_time = std::chrono::high_resolution_clock::now();
+    for (int i = 0; i < num_threads; i++) {
         pthread_create(&threads[i], nullptr, smoothing, &thread_data[i]);
     }
 
