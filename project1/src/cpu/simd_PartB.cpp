@@ -4,25 +4,25 @@
 #include <immintrin.h>
 #include "utils.hpp"
 
-#include <stdint.h>
-#include <string.h>
-void print128_num(__m128i var)
-{
-    uint16_t val[8];
-    memcpy(val, &var, sizeof(val));
-    printf("Numerical: %i %i %i %i %i %i %i %i \n", 
-           val[0], val[1], val[2], val[3], val[4], val[5], 
-           val[6], val[7]);
-}
-void printM256(__m256 vector) {
-    float values[8];
-    _mm256_storeu_ps(values, vector);
+// #include <stdint.h>
+// #include <string.h>
+// void print128_num(__m128i var)
+// {
+//     uint16_t val[8];
+//     memcpy(val, &var, sizeof(val));
+//     printf("Numerical: %i %i %i %i %i %i %i %i \n", 
+//            val[0], val[1], val[2], val[3], val[4], val[5], 
+//            val[6], val[7]);
+// }
+// void printM256(__m256 vector) {
+//     float values[8];
+//     _mm256_storeu_ps(values, vector);
     
-    for (int i = 0; i < 8; i++) {
-        std::cout << values[i] << " ";
-    }
-    std::cout << std::endl;
-}
+//     for (int i = 0; i < 8; i++) {
+//         std::cout << values[i] << " ";
+//     }
+//     std::cout << std::endl;
+// }
 
 const int FILTER_SIZE = 9;
 const float filter[9] = {

@@ -4,72 +4,72 @@ Number of cores: 1
 Input file from: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/Lena-RGB.jpg
 Output file to: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/Lena-Smooth-My.jpg
 Transformation Complete!
-Execution Time: 10 milliseconds
+Execution Time: 1 milliseconds
 
 Number of cores: 2
 Input file from: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/Lena-RGB.jpg
 Output file to: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/Lena-Smooth-My.jpg
 Transformation Complete!
-Execution Time: 9 milliseconds
+Execution Time: 1 milliseconds
 
 Number of cores: 4
 Input file from: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/Lena-RGB.jpg
 Output file to: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/Lena-Smooth-My.jpg
 Transformation Complete!
-Execution Time: 5 milliseconds
+Execution Time: 0 milliseconds
 
 Number of cores: 8
 Input file from: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/Lena-RGB.jpg
 Output file to: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/Lena-Smooth-My.jpg
 Transformation Complete!
-Execution Time: 3 milliseconds
+Execution Time: 0 milliseconds
 
 Number of cores: 16
 Input file from: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/Lena-RGB.jpg
 Output file to: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/Lena-Smooth-My.jpg
 Transformation Complete!
-Execution Time: 2 milliseconds
+Execution Time: 1 milliseconds
 
 Number of cores: 32
 Input file from: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/Lena-RGB.jpg
 Output file to: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/Lena-Smooth-My.jpg
 Transformation Complete!
-Execution Time: 3 milliseconds
+Execution Time: 2 milliseconds
 
 Pthread PartB (Optimized with -O2)
 Number of cores: 1
 Input file from: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-RGB.jpg
 Output file to: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-Smooth.jpg
 Transformation Complete!
-Execution Time: 14505 milliseconds
+Execution Time: 1550 milliseconds
 
 Number of cores: 2
 Input file from: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-RGB.jpg
 Output file to: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-Smooth.jpg
 Transformation Complete!
-Execution Time: 12328 milliseconds
+Execution Time: 1346 milliseconds
 
 Number of cores: 4
 Input file from: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-RGB.jpg
 Output file to: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-Smooth.jpg
 Transformation Complete!
-Execution Time: 6211 milliseconds
+Execution Time: 686 milliseconds
 
 Number of cores: 8
 Input file from: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-RGB.jpg
 Output file to: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-Smooth.jpg
 Transformation Complete!
-Execution Time: 3113 milliseconds
+Execution Time: 356 milliseconds
 
 Number of cores: 16
 Input file from: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-RGB.jpg
 Output file to: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-Smooth.jpg
 Transformation Complete!
-Execution Time: 1566 milliseconds
+Execution Time: 191 milliseconds
 
 Number of cores: 32
 Input file from: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-RGB.jpg
 Output file to: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-Smooth.jpg
 Transformation Complete!
-Execution Time: 862 milliseconds
+Execution Time: 142 milliseconds
 
