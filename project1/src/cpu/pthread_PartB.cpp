@@ -3,6 +3,8 @@
 #include <pthread.h>
 #include "utils.hpp"
 #include <immintrin.h>
+#include <vector>
+
 
 const int FILTER_SIZE = 9;
 const float filter[9] = {
@@ -22,8 +24,8 @@ struct ThreadData {
     unsigned char* new_reds;
     unsigned char* new_greens;
     unsigned char* new_blues;
-    int start_height;
-    int end_height;
+    int start;
+    int end;
 };
 
 __m128i shuffle = _mm_setr_epi8(0, 4, 8, 12, 
@@ -54,63 +56,60 @@ void* smoothing(void* arg) {
     //         data->output_buffer[p+2] = static_cast<unsigned char>(sum_b);
     //     }
     // }
-    for (int h = data->start_height; h < data->end_height; h++){
-        for (int w = 1; w < width - 1; w+=8){
+    for (int i = data->start; i < data->end; i+=8) {
+        __m256 sumRed = _mm256_setzero_ps();
+        __m256 sumGreen = _mm256_setzero_ps();
+        __m256 sumBlue = _mm256_setzero_ps();
 
-            __m256 sumRed = _mm256_setzero_ps();
-            __m256 sumGreen = _mm256_setzero_ps();
-            __m256 sumBlue = _mm256_setzero_ps();
-            int i = (h * width + w);
-            for(int f = 0; f < FILTER_SIZE; f++){
-                __m256 fil = _mm256_set1_ps(filter[f]);
-                int index = i+ (f/3-1) * width + (f%3-1);
+        for(int f = 0; f < FILTER_SIZE; f++){
+            __m256 fil = _mm256_set1_ps(filter[f]);
+            int index = i+ (f/3-1) * width + (f%3-1);
 
-                __m128i red_chars = _mm_loadu_si128((__m128i*) (data->reds+index));
-                __m256i red_ints = _mm256_cvtepu8_epi32(red_chars);
-                __m256 red_floats = _mm256_cvtepi32_ps(red_ints);
-                __m256 red_results = _mm256_mul_ps(red_floats, fil);
-                sumRed = _mm256_add_ps(red_results, sumRed);
+            __m128i red_chars = _mm_loadu_si128((__m128i*) (data->reds+index));
+            __m256i red_ints = _mm256_cvtepu8_epi32(red_chars);
+            __m256 red_floats = _mm256_cvtepi32_ps(red_ints);
+            __m256 red_results = _mm256_mul_ps(red_floats, fil);
+            sumRed = _mm256_add_ps(red_results, sumRed);
 
-                __m128i green_chars = _mm_loadu_si128((__m128i*) (data->greens +index));
-                __m256i green_ints = _mm256_cvtepu8_epi32(green_chars);
-                __m256 green_floats = _mm256_cvtepi32_ps(green_ints);
-                __m256 green_results = _mm256_mul_ps(green_floats, fil);
-                sumGreen = _mm256_add_ps(green_results, sumGreen);
+            __m128i green_chars = _mm_loadu_si128((__m128i*) (data->greens +index));
+            __m256i green_ints = _mm256_cvtepu8_epi32(green_chars);
+            __m256 green_floats = _mm256_cvtepi32_ps(green_ints);
+            __m256 green_results = _mm256_mul_ps(green_floats, fil);
+            sumGreen = _mm256_add_ps(green_results, sumGreen);
 
-                __m128i blue_chars = _mm_loadu_si128((__m128i*) (data->blues+index));
-                __m256i blue_ints = _mm256_cvtepu8_epi32(blue_chars);
-                __m256 blue_floats = _mm256_cvtepi32_ps(blue_ints);
-                __m256 blue_results = _mm256_mul_ps(blue_floats, fil);
-                sumBlue = _mm256_add_ps(blue_results, sumBlue);
-            }
-
-            __m256i sumRed_ints =  _mm256_cvtps_epi32(sumRed); // Convert the float32 results to int32
-            __m128i Red_low = _mm256_castsi256_si128(sumRed_ints);
-            
-            __m128i Red_high = _mm256_extracti128_si256(sumRed_ints, 1);
-            __m128i Red_trans_low = _mm_shuffle_epi8(Red_low, shuffle);// shuffling int32s to u_int8s
-            __m128i Red_trans_high = _mm_shuffle_epi8(Red_high, shuffle);// |0|0|0|4|0|0|0|3|0|0|0|2|0|0|0|1| -> |4|3|2|1|
-            _mm_storeu_si128((__m128i*)(&data->new_reds[i]), Red_trans_low);
-            _mm_storeu_si128((__m128i*)(&data->new_reds[i+4]), Red_trans_high);
-
-
-            __m256i sumGreen_ints =  _mm256_cvtps_epi32(sumGreen);
-            __m128i Green_low = _mm256_castsi256_si128(sumGreen_ints);
-            __m128i Green_high = _mm256_extracti128_si256(sumGreen_ints, 1);
-            __m128i Green_trans_low = _mm_shuffle_epi8(Green_low, shuffle);
-            __m128i Green_trans_high = _mm_shuffle_epi8(Green_high, shuffle);
-            _mm_storeu_si128((__m128i*)(&data->new_greens[i]), Green_trans_low);
-            _mm_storeu_si128((__m128i*)(&data->new_greens[i+4]), Green_trans_high);
-
-
-            __m256i sumBlue_ints =  _mm256_cvtps_epi32(sumBlue);
-            __m128i Blue_low = _mm256_castsi256_si128(sumBlue_ints);
-            __m128i Blue_high = _mm256_extracti128_si256(sumBlue_ints, 1);
-            __m128i Blue_trans_low = _mm_shuffle_epi8(Blue_low, shuffle);
-            __m128i Blue_trans_high = _mm_shuffle_epi8(Blue_high, shuffle);
-            _mm_storeu_si128((__m128i*)(&data->new_blues[i]), Blue_trans_low);
-            _mm_storeu_si128((__m128i*)(&data->new_blues[i+4]), Blue_trans_high);
+            __m128i blue_chars = _mm_loadu_si128((__m128i*) (data->blues+index));
+            __m256i blue_ints = _mm256_cvtepu8_epi32(blue_chars);
+            __m256 blue_floats = _mm256_cvtepi32_ps(blue_ints);
+            __m256 blue_results = _mm256_mul_ps(blue_floats, fil);
+            sumBlue = _mm256_add_ps(blue_results, sumBlue);
         }
+
+        __m256i sumRed_ints =  _mm256_cvtps_epi32(sumRed); // Convert the float32 results to int32
+        __m128i Red_low = _mm256_castsi256_si128(sumRed_ints);
+        
+        __m128i Red_high = _mm256_extracti128_si256(sumRed_ints, 1);
+        __m128i Red_trans_low = _mm_shuffle_epi8(Red_low, shuffle);// shuffling int32s to u_int8s
+        __m128i Red_trans_high = _mm_shuffle_epi8(Red_high, shuffle);// |0|0|0|4|0|0|0|3|0|0|0|2|0|0|0|1| -> |4|3|2|1|
+        _mm_storeu_si128((__m128i*)(&data->new_reds[i]), Red_trans_low);
+        _mm_storeu_si128((__m128i*)(&data->new_reds[i+4]), Red_trans_high);
+
+
+        __m256i sumGreen_ints =  _mm256_cvtps_epi32(sumGreen);
+        __m128i Green_low = _mm256_castsi256_si128(sumGreen_ints);
+        __m128i Green_high = _mm256_extracti128_si256(sumGreen_ints, 1);
+        __m128i Green_trans_low = _mm_shuffle_epi8(Green_low, shuffle);
+        __m128i Green_trans_high = _mm_shuffle_epi8(Green_high, shuffle);
+        _mm_storeu_si128((__m128i*)(&data->new_greens[i]), Green_trans_low);
+        _mm_storeu_si128((__m128i*)(&data->new_greens[i+4]), Green_trans_high);
+
+
+        __m256i sumBlue_ints =  _mm256_cvtps_epi32(sumBlue);
+        __m128i Blue_low = _mm256_castsi256_si128(sumBlue_ints);
+        __m128i Blue_high = _mm256_extracti128_si256(sumBlue_ints, 1);
+        __m128i Blue_trans_low = _mm_shuffle_epi8(Blue_low, shuffle);
+        __m128i Blue_trans_high = _mm_shuffle_epi8(Blue_high, shuffle);
+        _mm_storeu_si128((__m128i*)(&data->new_blues[i]), Blue_trans_low);
+        _mm_storeu_si128((__m128i*)(&data->new_blues[i+4]), Blue_trans_high);
     }
     return nullptr;
 }
@@ -153,7 +152,18 @@ int main(int argc, char** argv) {
     height = input_jpeg.height;
     num_channels = input_jpeg.num_channels;
 
-    int h_per_thread = (height- 2 + num_threads -1) / num_threads;
+    int total_pixel_num =(input_jpeg.width) * (input_jpeg.height-2);
+    int pixel_num_per_task = (total_pixel_num +(num_threads-1))/ num_threads;
+    std::vector<int> cuts(num_threads + 1, 0);
+
+    int i = 0;
+    cuts[0] = input_jpeg.width;
+    while (i < num_threads-1){
+        cuts[i+1] = cuts[i] + pixel_num_per_task;
+        i++;
+    }
+    cuts[i+1] = (input_jpeg.width) * (input_jpeg.height-1);
+
 
     for (int i = 0; i < num_threads; i++) {
         thread_data[i].reds = reds;
@@ -162,8 +172,8 @@ int main(int argc, char** argv) {
         thread_data[i].new_reds = new_reds;
         thread_data[i].new_greens = new_greens;
         thread_data[i].new_blues = new_blues;
-        thread_data[i].start_height = i * h_per_thread +1;
-        thread_data[i].end_height = (i == num_threads - 1) ? (height-1):(i + 1) * h_per_thread+1;
+        thread_data[i].start = cuts[i];
+        thread_data[i].end = cuts[i+1];
     }
 
     
