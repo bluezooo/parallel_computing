@@ -2,6 +2,7 @@
 #include <iostream>
 #include <vector>
 #include <chrono>
+#include <omp.h>    // OpenMP header
 
 #include <mpi.h>    // MPI Header
 
@@ -39,7 +40,7 @@ int main(int argc, char** argv) {
 
     // Read JPEG File
     const char * input_filepath = argv[1];
-    std::cout << "Input file from: " << input_filepath << "\n";
+    // std::cout << "Input file from: " << input_filepath << "\n";
     auto input_jpeg = read_from_jpeg(input_filepath);
     if (input_jpeg.buffer == NULL) {
         std::cerr << "Failed to read input JPEG image\n";
@@ -64,36 +65,46 @@ int main(int argc, char** argv) {
     // auto f_B = new unsigned char[input_jpeg.width * input_jpeg.height];
 
 
-    auto start_time = std::chrono::high_resolution_clock::now();
+
 
     // Divide the task
     // For example, there are 11 pixels and 3 tasks, 
     // we try to divide to 4 4 3 instead of 3 3 5
-    int total_pixel_num = input_jpeg.width * input_jpeg.height;
-    int pixel_num_per_task = total_pixel_num / numtasks;
-    int left_pixel_num = total_pixel_num % numtasks;
 
+    int total_pixel_num =(input_jpeg.width) * (input_jpeg.height-2);
+    int pixel_num_per_task = (total_pixel_num +(numtasks-1))/ numtasks;
     std::vector<int> cuts(numtasks + 1, 0);
-    int divided_left_pixel_num = 0;
 
-    for (int i = 0; i < numtasks; i++) {
-        if (divided_left_pixel_num < left_pixel_num) {
-            cuts[i+1] = cuts[i] + pixel_num_per_task + 1;
-            divided_left_pixel_num++;
-        } else cuts[i+1] = cuts[i] + pixel_num_per_task;
+    int i = 0;
+    cuts[0] = input_jpeg.width;
+    while (i < numtasks-1){
+        cuts[i+1] = cuts[i] + pixel_num_per_task;
+        i++;
     }
+    cuts[i+1] = (input_jpeg.width) * (input_jpeg.height-1);
+    // // std::cout<<numtasks<<std::endl;
+    // // for (int i = 0; i < numtasks;i++){
+    // //     std::cout<<cuts[i]<<std::endl;
+    // // }
 
     // The tasks for the master executor
     // 1. Transform the first division of the RGB contents to the Gray contents
     // 2. Receive the transformed Gray contents from slave executors
     // 3. Write the Gray contents to the JPEG File
+    // std::cout<<taskid<<std::endl;
     if (taskid == MASTER) {
         // Transform the first division of RGB Contents to the gray contents
+
         auto filteredImage = new unsigned char[input_jpeg.width * input_jpeg.height * input_jpeg.num_channels];
+        
+        auto start_time = std::chrono::high_resolution_clock::now();
+            
+        #pragma omp parallel for default(none) shared(rChannel, gChannel, bChannel, filteredImage, input_jpeg, filter, cuts)
+
         for (int i = cuts[MASTER]; i < cuts[MASTER + 1]; i++) {
             int sum_r = 0, sum_g = 0, sum_b = 0;
             for (int f = 0; f < FILTER_SIZE; f++) {
-                int index = ((f/3-1)* input_jpeg.width + (f%3-1)) * input_jpeg.num_channels + i;
+                int index = ((f/3-1)* input_jpeg.width + (f%3-1)+i);
                 unsigned char r = rChannel[index];
                 unsigned char g = gChannel[index];
                 unsigned char b = bChannel[index];
@@ -145,11 +156,13 @@ int main(int argc, char** argv) {
         // Transform the RGB Contents to the gray contents
         int length = (cuts[taskid + 1] - cuts[taskid]) *input_jpeg.num_channels; 
         auto filteredImage = new unsigned char[length];
-                    // int j = i-cuts[taskid];????????????
-        for (int i = cuts[taskid]; i < cuts[taskid + 1]; i++) {
+
+        #pragma omp parallel for default(none) shared(rChannel, gChannel, bChannel, filteredImage, input_jpeg, filter, cuts)
+
+        for (int i = 0; i < cuts[taskid + 1]-cuts[taskid]; i++) {
             int sum_r = 0, sum_g = 0, sum_b = 0;
             for (int f = 0; f < FILTER_SIZE; f++) {
-                int index = ((f/3-1)* input_jpeg.width + (f%3-1)) * input_jpeg.num_channels + i;
+                int index = ((f/3-1)* input_jpeg.width + (f%3-1)+ i+cuts[taskid]);
                 unsigned char r = rChannel[index];
                 unsigned char g = gChannel[index];
                 unsigned char b = bChannel[index];
@@ -158,11 +171,9 @@ int main(int argc, char** argv) {
                 sum_b += b * filter[f];
             }
 
-            filteredImage[(i-cuts[taskid])*input_jpeg.num_channels] = static_cast<unsigned char>(sum_r);
-            filteredImage[(i-cuts[taskid])*input_jpeg.num_channels+1] = static_cast<unsigned char>(sum_g);
-            filteredImage[(i-cuts[taskid])*input_jpeg.num_channels+2] = static_cast<unsigned char>(sum_b);
-            // int j = (i-cuts[taskid]);
-            // filteredImage[i] = static_cast<unsigned char>(0.299 * r + 0.587 * g + 0.114 * b);
+            filteredImage[i*input_jpeg.num_channels] = static_cast<unsigned char>(sum_r);
+            filteredImage[i*input_jpeg.num_channels+1] = static_cast<unsigned char>(sum_g);
+            filteredImage[i*input_jpeg.num_channels+2] = static_cast<unsigned char>(sum_b);
         }
 
         // Send the gray image back to the master
