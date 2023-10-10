@@ -26,6 +26,7 @@ struct ThreadData {
     unsigned char* new_blues;
     int start;
     int end;
+    int length;
 };
 
 __m128i shuffle = _mm_setr_epi8(0, 4, 8, 12, 
@@ -56,10 +57,11 @@ void* smoothing(void* arg) {
     //         data->output_buffer[p+2] = static_cast<unsigned char>(sum_b);
     //     }
     // }
-    for (int i = data->start; i < data->end; i+=8) {
+    for (int i = data->start; i < data->start+data->length; i+=8) {
         __m256 sumRed = _mm256_setzero_ps();
         __m256 sumGreen = _mm256_setzero_ps();
         __m256 sumBlue = _mm256_setzero_ps();
+        // printf("%d ", i);
 
         for(int f = 0; f < FILTER_SIZE; f++){
             __m256 fil = _mm256_set1_ps(filter[f]);
@@ -111,6 +113,22 @@ void* smoothing(void* arg) {
         _mm_storeu_si128((__m128i*)(&data->new_blues[i]), Blue_trans_low);
         _mm_storeu_si128((__m128i*)(&data->new_blues[i+4]), Blue_trans_high);
     }
+    for (int i = data->start+data->length -8; i < data->end +8; i++) {
+        int sum_r = 0, sum_g = 0, sum_b = 0;
+        for(int f = 0; f < FILTER_SIZE; f++){
+            int index = ((f/3-1)* width + (f%3-1)+ i);
+            unsigned char r = data->reds[index];
+            unsigned char g = data->greens[index];
+            unsigned char b = data->blues[index];
+            sum_r += r * filter[f];
+            sum_g += g * filter[f];
+            sum_b += b * filter[f];
+        }
+        data->new_reds[i] = static_cast<unsigned char>(sum_r);
+        data->new_greens[i] = static_cast<unsigned char>(sum_g);
+        data->new_blues[i] = static_cast<unsigned char>(sum_b);
+    }
+
     return nullptr;
 }
 
@@ -174,6 +192,7 @@ int main(int argc, char** argv) {
         thread_data[i].new_blues = new_blues;
         thread_data[i].start = cuts[i];
         thread_data[i].end = cuts[i+1];
+        thread_data[i].length = ((cuts[i+1] - cuts[i])/8 -1)*8;
     }
 
     
