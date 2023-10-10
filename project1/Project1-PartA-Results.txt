@@ -3,27 +3,27 @@ Sequential PartA (Optimized with -O2)
 Input file from: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-RGB.jpg
 Output file to: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-Gray.jpg
 Transformation Complete!
-Execution Time: 633 milliseconds
+Execution Time: 645 milliseconds
 
 SIMD(AVX2) PartA (Optimized with -O2)
 Input file from: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-RGB.jpg
 Output file to: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-Gray.jpg
 Transformation Complete!
-Execution Time: 405 milliseconds
+Execution Time: 392 milliseconds
 
 MPI PartA (Optimized with -O2)
 Number of processes: 1
 Input file from: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-RGB.jpg
 Output file to: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-Gray.jpg
 Transformation Complete!
-Execution Time: 657 milliseconds
+Execution Time: 670 milliseconds
 
 Number of processes: 2
 Input file from: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-RGB.jpg
 Input file from: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-RGB.jpg
 Output file to: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-Gray.jpg
 Transformation Complete!
-Execution Time: 773 milliseconds
+Execution Time: 786 milliseconds
 
 Number of processes: 4
 Input file from: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-RGB.jpg
@@ -32,7 +32,7 @@ Input file from: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../..
 Input file from: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-RGB.jpg
 Output file to: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-Gray.jpg
 Transformation Complete!
-Execution Time: 487 milliseconds
+Execution Time: 494 milliseconds
 
 Number of processes: 8
 Input file from: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-RGB.jpg
@@ -45,7 +45,7 @@ Input file from: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../..
 Input file from: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-RGB.jpg
 Output file to: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-Gray.jpg
 Transformation Complete!
-Execution Time: 335 milliseconds
+Execution Time: 344 milliseconds
 
 Number of processes: 16
 Input file from: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-RGB.jpg
@@ -66,7 +66,7 @@ Input file from: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../..
 Input file from: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-RGB.jpg
 Output file to: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-Gray.jpg
 Transformation Complete!
-Execution Time: 266 milliseconds
+Execution Time: 260 milliseconds
 
 Number of processes: 32
 Input file from: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-RGB.jpg
@@ -103,87 +103,87 @@ Input file from: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../..
 Input file from: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-RGB.jpg
 Output file to: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-Gray.jpg
 Transformation Complete!
-Execution Time: 270 milliseconds
+Execution Time: 219 milliseconds
 
 Pthread PartA (Optimized with -O2)
 Number of cores: 1
 Input file from: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-RGB.jpg
 Output file to: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-Gray.jpg
 Transformation Complete!
-Execution Time: 708 milliseconds
+Execution Time: 719 milliseconds
 
 Number of cores: 2
 Input file from: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-RGB.jpg
 Output file to: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-Gray.jpg
 Transformation Complete!
-Execution Time: 642 milliseconds
+Execution Time: 645 milliseconds
 
 Number of cores: 4
 Input file from: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-RGB.jpg
 Output file to: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-Gray.jpg
 Transformation Complete!
-Execution Time: 411 milliseconds
+Execution Time: 337 milliseconds
 
 Number of cores: 8
 Input file from: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-RGB.jpg
 Output file to: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-Gray.jpg
 Transformation Complete!
-Execution Time: 196 milliseconds
+Execution Time: 179 milliseconds
 
 Number of cores: 16
 Input file from: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-RGB.jpg
 Output file to: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-Gray.jpg
 Transformation Complete!
-Execution Time: 98 milliseconds
+Execution Time: 103 milliseconds
 
 Number of cores: 32
 Input file from: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-RGB.jpg
 Output file to: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-Gray.jpg
 Transformation Complete!
-Execution Time: 71 milliseconds
+Execution Time: 68 milliseconds
 
 OpenMP PartA (Optimized with -O2)
 Number of cores: 1
 Input file from: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-RGB.jpg
 Output file to: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-Gray.jpg
 Transformation Complete!
-Execution Time: 588 milliseconds
+Execution Time: 591 milliseconds
 
 Number of cores: 2
 Input file from: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-RGB.jpg
 Output file to: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-Gray.jpg
 Transformation Complete!
-Execution Time: 587 milliseconds
+Execution Time: 592 milliseconds
 
 Number of cores: 4
 Input file from: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-RGB.jpg
 Output file to: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-Gray.jpg
 Transformation Complete!
-Execution Time: 477 milliseconds
+Execution Time: 278 milliseconds
 
 Number of cores: 8
 Input file from: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-RGB.jpg
 Output file to: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-Gray.jpg
 Transformation Complete!
-Execution Time: 270 milliseconds
+Execution Time: 318 milliseconds
 
 Number of cores: 16
 Input file from: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-RGB.jpg
 Output file to: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-Gray.jpg
 Transformation Complete!
-Execution Time: 209 milliseconds
+Execution Time: 170 milliseconds
 
 Number of cores: 32
 Input file from: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-RGB.jpg
 Output file to: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-Gray.jpg
 Transformation Complete!
-Execution Time: 140 milliseconds
+Execution Time: 130 milliseconds
 
 CUDA PartA
 Input file from: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-RGB.jpg
 Output file to: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-Gray.jpg
 Transformation Complete!
-GPU Execution Time: 27.1251 milliseconds
+GPU Execution Time: 27.119 milliseconds
 
 OpenACC PartA
 Input file from: /nfsmnt/120090246/parallel_computing/project1/src/scripts/../../images/20K-RGB.jpg

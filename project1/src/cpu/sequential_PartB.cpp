@@ -34,75 +34,75 @@ int main(int argc, char** argv)
         filteredImage[i] = 0;
     auto start_time = std::chrono::high_resolution_clock::now();
     // Nested for loop, please optimize it
-    // for (int height = 1; height < input_jpeg.height - 1; height++)
-    // {
-    //     for (int width = 1; width < input_jpeg.width - 1; width++)
-    //     {
-    //         int sum_r = 0, sum_g = 0, sum_b = 0;
-    //         for (int i = -1; i <= 1; i++)
-    //         {
-    //             for (int j = -1; j <= 1; j++)
-    //             {
-    //                 int channel_value_r = input_jpeg.buffer[((height + i) * input_jpeg.width + (width + j)) * input_jpeg.num_channels];
-    //                 int channel_value_g = input_jpeg.buffer[((height + i) * input_jpeg.width + (width + j)) * input_jpeg.num_channels + 1];
-    //                 int channel_value_b = input_jpeg.buffer[((height + i) * input_jpeg.width + (width + j)) * input_jpeg.num_channels + 2];
-    //                 sum_r += channel_value_r * filter[i + 1][j + 1];
-    //                 sum_g += channel_value_g * filter[i + 1][j + 1];
-    //                 sum_b += channel_value_b * filter[i + 1][j + 1];
-    //             }
-    //         }
-    //         filteredImage[(height * input_jpeg.width + width) * input_jpeg.num_channels]
-    //             = static_cast<unsigned char>(std::round(sum_r));
-    //         filteredImage[(height * input_jpeg.width + width) * input_jpeg.num_channels + 1]
-    //             = static_cast<unsigned char>(std::round(sum_g));
-    //         filteredImage[(height * input_jpeg.width + width) * input_jpeg.num_channels + 2]
-    //             = static_cast<unsigned char>(std::round(sum_b));
-    //     }
-    // }
-    int c = input_jpeg.num_channels;
-    int w = input_jpeg.width;
     for (int height = 1; height < input_jpeg.height - 1; height++)
     {
         for (int width = 1; width < input_jpeg.width - 1; width++)
         {
             int sum_r = 0, sum_g = 0, sum_b = 0;
-            int pos = (height * w+ width) * c;
-
-            sum_r += input_jpeg.buffer[pos+ (-1*-1)*c] * filter[0][0];
-            sum_r += input_jpeg.buffer[pos+ (-1*w)*c] * filter[0][1];
-            sum_r += input_jpeg.buffer[pos+ (-1*w+1)*c] * filter[0][2];
-            sum_r += input_jpeg.buffer[pos-c] * filter[1][0];
-            sum_r += input_jpeg.buffer[pos] * filter[1][1];
-            sum_r += input_jpeg.buffer[pos+c] * filter[1][2];
-            sum_r += input_jpeg.buffer[pos+ (w-1)*c] * filter[2][0];
-            sum_r += input_jpeg.buffer[pos+ (w)*c] * filter[2][1];
-            sum_r += input_jpeg.buffer[pos+ (w+1)*c] * filter[2][2];
-
-            sum_g += input_jpeg.buffer[pos+ (-1*w-1)*c+1] * filter[0][0];
-            sum_g += input_jpeg.buffer[pos+ (-1*w)*c+1] * filter[0][1];
-            sum_g += input_jpeg.buffer[pos+ (-1*w+1)*c+1] * filter[0][2];
-            sum_g += input_jpeg.buffer[pos-c+1] * filter[1][0];
-            sum_g += input_jpeg.buffer[pos+1] * filter[1][1];
-            sum_g += input_jpeg.buffer[pos+c+1] * filter[1][2];
-            sum_g += input_jpeg.buffer[pos+ (w-1)*c+1] * filter[2][0];
-            sum_g += input_jpeg.buffer[pos+ (w)*c+1] * filter[2][1];
-            sum_g += input_jpeg.buffer[pos+ (w+1)*c+1] * filter[2][2];
-
-            sum_b += input_jpeg.buffer[pos+ (-1*w-1)*c+2] * filter[0][0];
-            sum_b += input_jpeg.buffer[pos+ (-1*w)*c+2] * filter[0][1];
-            sum_b += input_jpeg.buffer[pos+ (-1*w+1)*c+2] * filter[0][2];
-            sum_b += input_jpeg.buffer[pos-c+2] * filter[1][0];
-            sum_b += input_jpeg.buffer[pos+2] * filter[1][1];
-            sum_b += input_jpeg.buffer[pos+c+2] * filter[1][2];
-            sum_b += input_jpeg.buffer[pos+ (w-1)*c+2] * filter[2][0];
-            sum_b += input_jpeg.buffer[pos+ (w)*c+2] * filter[2][1];
-            sum_b += input_jpeg.buffer[pos+ (w+1)*c+2] * filter[2][2];
-        
-            filteredImage[pos]= static_cast<unsigned char>(std::round(sum_r));
-            filteredImage[pos + 1]= static_cast<unsigned char>(std::round(sum_g));
-            filteredImage[pos + 2]= static_cast<unsigned char>(std::round(sum_b));
+            for (int i = -1; i <= 1; i++)
+            {
+                for (int j = -1; j <= 1; j++)
+                {
+                    int channel_value_r = input_jpeg.buffer[((height + i) * input_jpeg.width + (width + j)) * input_jpeg.num_channels];
+                    int channel_value_g = input_jpeg.buffer[((height + i) * input_jpeg.width + (width + j)) * input_jpeg.num_channels + 1];
+                    int channel_value_b = input_jpeg.buffer[((height + i) * input_jpeg.width + (width + j)) * input_jpeg.num_channels + 2];
+                    sum_r += channel_value_r * filter[i + 1][j + 1];
+                    sum_g += channel_value_g * filter[i + 1][j + 1];
+                    sum_b += channel_value_b * filter[i + 1][j + 1];
+                }
+            }
+            filteredImage[(height * input_jpeg.width + width) * input_jpeg.num_channels]
+                = static_cast<unsigned char>(std::round(sum_r));
+            filteredImage[(height * input_jpeg.width + width) * input_jpeg.num_channels + 1]
+                = static_cast<unsigned char>(std::round(sum_g));
+            filteredImage[(height * input_jpeg.width + width) * input_jpeg.num_channels + 2]
+                = static_cast<unsigned char>(std::round(sum_b));
         }
     }
+    // int c = input_jpeg.num_channels;
+    // int w = input_jpeg.width;
+    // for (int height = 1; height < input_jpeg.height - 1; height++)
+    // {
+    //     for (int width = 1; width < input_jpeg.width - 1; width++)
+    //     {
+    //         int sum_r = 0, sum_g = 0, sum_b = 0;
+    //         int pos = (height * w+ width) * c;
+
+    //         sum_r += input_jpeg.buffer[pos+ (-1*-1)*c] * filter[0][0];
+    //         sum_r += input_jpeg.buffer[pos+ (-1*w)*c] * filter[0][1];
+    //         sum_r += input_jpeg.buffer[pos+ (-1*w+1)*c] * filter[0][2];
+    //         sum_r += input_jpeg.buffer[pos-c] * filter[1][0];
+    //         sum_r += input_jpeg.buffer[pos] * filter[1][1];
+    //         sum_r += input_jpeg.buffer[pos+c] * filter[1][2];
+    //         sum_r += input_jpeg.buffer[pos+ (w-1)*c] * filter[2][0];
+    //         sum_r += input_jpeg.buffer[pos+ (w)*c] * filter[2][1];
+    //         sum_r += input_jpeg.buffer[pos+ (w+1)*c] * filter[2][2];
+
+    //         sum_g += input_jpeg.buffer[pos+ (-1*w-1)*c+1] * filter[0][0];
+    //         sum_g += input_jpeg.buffer[pos+ (-1*w)*c+1] * filter[0][1];
+    //         sum_g += input_jpeg.buffer[pos+ (-1*w+1)*c+1] * filter[0][2];
+    //         sum_g += input_jpeg.buffer[pos-c+1] * filter[1][0];
+    //         sum_g += input_jpeg.buffer[pos+1] * filter[1][1];
+    //         sum_g += input_jpeg.buffer[pos+c+1] * filter[1][2];
+    //         sum_g += input_jpeg.buffer[pos+ (w-1)*c+1] * filter[2][0];
+    //         sum_g += input_jpeg.buffer[pos+ (w)*c+1] * filter[2][1];
+    //         sum_g += input_jpeg.buffer[pos+ (w+1)*c+1] * filter[2][2];
+
+    //         sum_b += input_jpeg.buffer[pos+ (-1*w-1)*c+2] * filter[0][0];
+    //         sum_b += input_jpeg.buffer[pos+ (-1*w)*c+2] * filter[0][1];
+    //         sum_b += input_jpeg.buffer[pos+ (-1*w+1)*c+2] * filter[0][2];
+    //         sum_b += input_jpeg.buffer[pos-c+2] * filter[1][0];
+    //         sum_b += input_jpeg.buffer[pos+2] * filter[1][1];
+    //         sum_b += input_jpeg.buffer[pos+c+2] * filter[1][2];
+    //         sum_b += input_jpeg.buffer[pos+ (w-1)*c+2] * filter[2][0];
+    //         sum_b += input_jpeg.buffer[pos+ (w)*c+2] * filter[2][1];
+    //         sum_b += input_jpeg.buffer[pos+ (w+1)*c+2] * filter[2][2];
+        
+    //         filteredImage[pos]= static_cast<unsigned char>(std::round(sum_r));
+    //         filteredImage[pos + 1]= static_cast<unsigned char>(std::round(sum_g));
+    //         filteredImage[pos + 2]= static_cast<unsigned char>(std::round(sum_b));
+    //     }
+    // }
 
     auto end_time = std::chrono::high_resolution_clock::now();
     auto elapsed_time = std::chrono::duration_cast<std::chrono::milliseconds>(
