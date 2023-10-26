@@ -8,56 +8,56 @@
 
 CURRENT_DIR=$(pwd)/src
 
-# # Naive
-# echo "Naive Matrix Multiplication (Optimized with -O2)"
-# srun -n 1 --cpus-per-task 1 ${CURRENT_DIR}/../build/src/naive ${CURRENT_DIR}/../matrices/matrix5.txt ${CURRENT_DIR}/../matrices/matrix6.txt ${CURRENT_DIR}/../build/result_standard1.txt
-# echo ""
+# Naive
+echo "Naive Matrix Multiplication (Optimized with -O2)"
+srun -n 1 --cpus-per-task 1 ${CURRENT_DIR}/../build/src/naive ${CURRENT_DIR}/../matrices/matrix5.txt ${CURRENT_DIR}/../matrices/matrix6.txt ${CURRENT_DIR}/../build/result_standard1.txt
+echo ""
 
-# echo "Naive Matrix Multiplication (Optimized with -O2)"
-# srun -n 1 --cpus-per-task 1 ${CURRENT_DIR}/../build/src/naive ${CURRENT_DIR}/../matrices/matrix7.txt ${CURRENT_DIR}/../matrices/matrix8.txt ${CURRENT_DIR}/../build/result_standard2.txt
-# echo ""
+echo "Naive Matrix Multiplication (Optimized with -O2)"
+srun -n 1 --cpus-per-task 1 ${CURRENT_DIR}/../build/src/naive ${CURRENT_DIR}/../matrices/matrix7.txt ${CURRENT_DIR}/../matrices/matrix8.txt ${CURRENT_DIR}/../build/result_standard2.txt
+echo ""
 
 # Memory Locality
-# echo "Memory Locality Matrix Multiplication (Optimized with -O2)"
-# srun -n 1 --cpus-per-task 1 perf record -e cpu-cycles,cache-misses,page-faults -g -o ./perf_locality1.data ${CURRENT_DIR}/../build/src/locality ${CURRENT_DIR}/../matrices/matrix5.txt ${CURRENT_DIR}/../matrices/matrix6.txt ${CURRENT_DIR}/../build/result1.txt
-# echo ""
+echo "Memory Locality Matrix Multiplication (Optimized with -O2)"
+srun -n 1 --cpus-per-task 1 perf record -e cpu-cycles,cache-misses,page-faults -g -o ./perf_locality1.data ${CURRENT_DIR}/../build/src/locality ${CURRENT_DIR}/../matrices/matrix5.txt ${CURRENT_DIR}/../matrices/matrix6.txt ${CURRENT_DIR}/../build/result1.txt
+echo ""
 
-# echo "Memory Locality Matrix Multiplication (Optimized with -O2)"
-# srun -n 1 --cpus-per-task 1 perf record -e cpu-cycles,cache-misses,page-faults -g -o ./perf_locality2.data ${CURRENT_DIR}/../build/src/locality ${CURRENT_DIR}/../matrices/matrix7.txt ${CURRENT_DIR}/../matrices/matrix8.txt ${CURRENT_DIR}/../build/result2.txt
-# echo ""
-# echo "Memory Locality Matrix Multiplication (Optimized with -O2)"
-# srun -n 1 --cpus-per-task 1 ${CURRENT_DIR}/../build/src/locality ${CURRENT_DIR}/../matrices/matrix5.txt ${CURRENT_DIR}/../matrices/matrix6.txt ${CURRENT_DIR}/../build/result1.txt
-# echo ""
+echo "Memory Locality Matrix Multiplication (Optimized with -O2)"
+srun -n 1 --cpus-per-task 1 perf record -e cpu-cycles,cache-misses,page-faults -g -o ./perf_locality2.data ${CURRENT_DIR}/../build/src/locality ${CURRENT_DIR}/../matrices/matrix7.txt ${CURRENT_DIR}/../matrices/matrix8.txt ${CURRENT_DIR}/../build/result2.txt
+echo ""
+echo "Memory Locality Matrix Multiplication (Optimized with -O2)"
+srun -n 1 --cpus-per-task 1 ${CURRENT_DIR}/../build/src/locality ${CURRENT_DIR}/../matrices/matrix5.txt ${CURRENT_DIR}/../matrices/matrix6.txt ${CURRENT_DIR}/../build/result1.txt
+echo ""
 
-# echo "Memory Locality Matrix Multiplication (Optimized with -O2)"
-# srun -n 1 --cpus-per-task 1 ${CURRENT_DIR}/../build/src/locality ${CURRENT_DIR}/../matrices/matrix7.txt ${CURRENT_DIR}/../matrices/matrix8.txt ${CURRENT_DIR}/../build/result2.txt
-# echo ""
+echo "Memory Locality Matrix Multiplication (Optimized with -O2)"
+srun -n 1 --cpus-per-task 1 ${CURRENT_DIR}/../build/src/locality ${CURRENT_DIR}/../matrices/matrix7.txt ${CURRENT_DIR}/../matrices/matrix8.txt ${CURRENT_DIR}/../build/result2.txt
+echo ""
 
-# # SIMD + Reordering
-# echo "SIMD + Memory Locality Matrix Multiplication (Optimized with -O2)"
-# srun -n 1 --cpus-per-task 1 ${CURRENT_DIR}/../build/src/simd ${CURRENT_DIR}/../matrices/matrix5.txt ${CURRENT_DIR}/../matrices/matrix6.txt ${CURRENT_DIR}/../build/result1.txt
-# echo ""
-# echo "SIMD + Memory Locality Matrix Multiplication (Optimized with -O2)"
-# srun -n 1 --cpus-per-task 1 ${CURRENT_DIR}/../build/src/simd ${CURRENT_DIR}/../matrices/matrix7.txt ${CURRENT_DIR}/../matrices/matrix8.txt ${CURRENT_DIR}/../build/result2.txt
-# echo ""
+# SIMD + Reordering
+echo "SIMD + Memory Locality Matrix Multiplication (Optimized with -O2)"
+srun -n 1 --cpus-per-task 1 ${CURRENT_DIR}/../build/src/simd ${CURRENT_DIR}/../matrices/matrix5.txt ${CURRENT_DIR}/../matrices/matrix6.txt ${CURRENT_DIR}/../build/result1.txt
+echo ""
+echo "SIMD + Memory Locality Matrix Multiplication (Optimized with -O2)"
+srun -n 1 --cpus-per-task 1 ${CURRENT_DIR}/../build/src/simd ${CURRENT_DIR}/../matrices/matrix7.txt ${CURRENT_DIR}/../matrices/matrix8.txt ${CURRENT_DIR}/../build/result2.txt
+echo ""
 
-## OpenMP + SIMD + Reordering
-# echo "OpenMP + SIMD + Memory Locality Matrix Multiplication (Optimized with -O2)"
-# for num_cores in 1 2 4 8 16 32
-# do
-#   echo "Number of cores: $num_cores"
-#   srun -n 1 --cpus-per-task $num_cores ${CURRENT_DIR}/../build/src/openmp $num_cores ${CURRENT_DIR}/../matrices/matrix5.txt ${CURRENT_DIR}/../matrices/matrix6.txt ${CURRENT_DIR}/../build/result1.txt
-#   echo ""
-# #   python ${CURRENT_DIR}/../com.py
-# done
+# OpenMP + SIMD + Reordering
+echo "OpenMP + SIMD + Memory Locality Matrix Multiplication (Optimized with -O2)"
+for num_cores in 1 2 4 8 16 32
+do
+  echo "Number of cores: $num_cores"
+  srun -n 1 --cpus-per-task $num_cores ${CURRENT_DIR}/../build/src/openmp $num_cores ${CURRENT_DIR}/../matrices/matrix5.txt ${CURRENT_DIR}/../matrices/matrix6.txt ${CURRENT_DIR}/../build/result1.txt
+  echo ""
+#   python ${CURRENT_DIR}/../com.py
+done
 
-# echo "OpenMP + SIMD + Memory Locality Matrix Multiplication (Optimized with -O2)"
-# for num_cores in 1 2 4 8 16 32
-# do
-#   echo "Number of cores: $num_cores"
-#   srun -n 1 --cpus-per-task $num_cores ${CURRENT_DIR}/../build/src/openmp $num_cores ${CURRENT_DIR}/../matrices/matrix7.txt ${CURRENT_DIR}/../matrices/matrix8.txt ${CURRENT_DIR}/../build/result2.txt
-#   echo ""
-# done
+echo "OpenMP + SIMD + Memory Locality Matrix Multiplication (Optimized with -O2)"
+for num_cores in 1 2 4 8 16 32
+do
+  echo "Number of cores: $num_cores"
+  srun -n 1 --cpus-per-task $num_cores ${CURRENT_DIR}/../build/src/openmp $num_cores ${CURRENT_DIR}/../matrices/matrix7.txt ${CURRENT_DIR}/../matrices/matrix8.txt ${CURRENT_DIR}/../build/result2.txt
+  echo ""
+done
 
 
 ### MPI + OpenMP + SIMD + Reordering

@@ -21,7 +21,7 @@ Matrix matrix_multiply_mpi(const Matrix& matrix1, const Matrix& matrix2, \
 
     // size_t M = matrix1.getRows(), K = matrix1.getCols(), N = matrix2.getCols();
 
-    Matrix result(M, N);
+    Matrix result(end-start, N);
 
     // Your Code Here!
     // Optimizing Matrix Multiplication 
@@ -35,7 +35,7 @@ Matrix matrix_multiply_mpi(const Matrix& matrix1, const Matrix& matrix2, \
 #pragma omp parallel for default(none) shared(matrix1, matrix2, result, M, N, K, start, end)
 
     for (size_t i = start; i < end; i++) {
-        int * sum = result[i];
+        int * sum = result[i-start];
         for (size_t k = 0; k < K; ++k) {
             __m256i t1 = _mm256_set1_epi32((matrix1[i][k]));
             const int *p1 = matrix2[k];
@@ -106,9 +106,14 @@ int main(int argc, char** argv) {
 
     auto start_time = std::chrono::high_resolution_clock::now();
     if (taskid == MASTER) {
-
-        Matrix result = matrix_multiply_mpi(matrix1, matrix2, cuts[MASTER], cuts[MASTER+1], M, K, N);
-
+        Matrix result = Matrix(M, N);
+        Matrix temp_result = matrix_multiply_mpi(matrix1, matrix2, cuts[MASTER], cuts[MASTER+1], M, K, N);
+#pragma omp parallel for default(none) shared(result, temp_result, N, cuts)
+        for(int i = 0; i < cuts[1]; i++){
+            for(int j = 0; j < N; j++){
+                result[i][j] = temp_result[i][j];
+            }
+        }
         for (int i = MASTER + 1; i < numtasks; i++) {
             auto start_row = cuts[i];
             auto end_row = cuts[i + 1];
@@ -135,7 +140,7 @@ int main(int argc, char** argv) {
         auto end = cuts[taskid + 1];
         Matrix result = matrix_multiply_mpi(matrix1, matrix2, start, end, M, K, N);
         for(int i = cuts[taskid]; i < cuts[taskid+1]; i++){
-            int * ptr = result[i];
+            int * ptr = result[i-cuts[taskid]];
             MPI_Send(ptr , N , MPI_INT , MASTER , TAG_GATHER , MPI_COMM_WORLD);
         }
     }

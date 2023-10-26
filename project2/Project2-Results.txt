@@ -1,3 +1,109 @@
+Naive Matrix Multiplication (Optimized with -O2)
+Output file to: /nfsmnt/120090246/parallel_computing/project2/src/../build/result_standard1.txt
+Multiplication Complete!
+Execution Time: 8174 milliseconds
+
+Naive Matrix Multiplication (Optimized with -O2)
+Output file to: /nfsmnt/120090246/parallel_computing/project2/src/../build/result_standard2.txt
+Multiplication Complete!
+Execution Time: 88887 milliseconds
+
+Memory Locality Matrix Multiplication (Optimized with -O2)
+Output file to: /nfsmnt/120090246/parallel_computing/project2/src/../build/result1.txt
+Multiplication Complete!
+Execution Time: 795 milliseconds
+[ perf record: Woken up 2 times to write data ]
+[ perf record: Captured and wrote 0.420 MB ./perf_locality1.data (5884 samples) ]
+
+Memory Locality Matrix Multiplication (Optimized with -O2)
+Output file to: /nfsmnt/120090246/parallel_computing/project2/src/../build/result2.txt
+Multiplication Complete!
+Execution Time: 6768 milliseconds
+[ perf record: Woken up 18 times to write data ]
+[ perf record: Captured and wrote 4.259 MB ./perf_locality2.data (61027 samples) ]
+
+Memory Locality Matrix Multiplication (Optimized with -O2)
+Output file to: /nfsmnt/120090246/parallel_computing/project2/src/../build/result1.txt
+Multiplication Complete!
+Execution Time: 764 milliseconds
+
+Memory Locality Matrix Multiplication (Optimized with -O2)
+Output file to: /nfsmnt/120090246/parallel_computing/project2/src/../build/result2.txt
+Multiplication Complete!
+Execution Time: 6382 milliseconds
+
+SIMD + Memory Locality Matrix Multiplication (Optimized with -O2)
+Output file to: /nfsmnt/120090246/parallel_computing/project2/src/../build/result1.txt
+Multiplication Complete!
+Execution Time: 270 milliseconds
+
+SIMD + Memory Locality Matrix Multiplication (Optimized with -O2)
+Output file to: /nfsmnt/120090246/parallel_computing/project2/src/../build/result2.txt
+Multiplication Complete!
+Execution Time: 2690 milliseconds
+
+OpenMP + SIMD + Memory Locality Matrix Multiplication (Optimized with -O2)
+Number of cores: 1
+Output file to: /nfsmnt/120090246/parallel_computing/project2/src/../build/result1.txt
+Multiplication Complete!
+Execution Time: 271 milliseconds
+
+Number of cores: 2
+Output file to: /nfsmnt/120090246/parallel_computing/project2/src/../build/result1.txt
+Multiplication Complete!
+Execution Time: 227 milliseconds
+
+Number of cores: 4
+Output file to: /nfsmnt/120090246/parallel_computing/project2/src/../build/result1.txt
+Multiplication Complete!
+Execution Time: 118 milliseconds
+
+Number of cores: 8
+Output file to: /nfsmnt/120090246/parallel_computing/project2/src/../build/result1.txt
+Multiplication Complete!
+Execution Time: 111 milliseconds
+
+Number of cores: 16
+Output file to: /nfsmnt/120090246/parallel_computing/project2/src/../build/result1.txt
+Multiplication Complete!
+Execution Time: 66 milliseconds
+
+Number of cores: 32
+Output file to: /nfsmnt/120090246/parallel_computing/project2/src/../build/result1.txt
+Multiplication Complete!
+Execution Time: 41 milliseconds
+
+OpenMP + SIMD + Memory Locality Matrix Multiplication (Optimized with -O2)
+Number of cores: 1
+Output file to: /nfsmnt/120090246/parallel_computing/project2/src/../build/result2.txt
+Multiplication Complete!
+Execution Time: 2673 milliseconds
+
+Number of cores: 2
+Output file to: /nfsmnt/120090246/parallel_computing/project2/src/../build/result2.txt
+Multiplication Complete!
+Execution Time: 1902 milliseconds
+
+Number of cores: 4
+Output file to: /nfsmnt/120090246/parallel_computing/project2/src/../build/result2.txt
+Multiplication Complete!
+Execution Time: 1008 milliseconds
+
+Number of cores: 8
+Output file to: /nfsmnt/120090246/parallel_computing/project2/src/../build/result2.txt
+Multiplication Complete!
+Execution Time: 555 milliseconds
+
+Number of cores: 16
+Output file to: /nfsmnt/120090246/parallel_computing/project2/src/../build/result2.txt
+Multiplication Complete!
+Execution Time: 364 milliseconds
+
+Number of cores: 32
+Output file to: /nfsmnt/120090246/parallel_computing/project2/src/../build/result2.txt
+Multiplication Complete!
+Execution Time: 209 milliseconds
+
 MPI + OpenMP + SIMD + Memory Locality Matrix Multiplication (Optimized with -O2)
 Number of Processes: 1, Number of Threads: 32
 Output file to: /nfsmnt/120090246/parallel_computing/project2/src/../build/result1.txt
@@ -7,12 +113,12 @@ Execution Time: 45 milliseconds
 Number of Processes: 2, Number of Threads: 16
 Output file to: /nfsmnt/120090246/parallel_computing/project2/src/../build/result1.txt
 Multiplication Complete!
-Execution Time: 50 milliseconds
+Execution Time: 46 milliseconds
 
 Number of Processes: 4, Number of Threads: 8
 Output file to: /nfsmnt/120090246/parallel_computing/project2/src/../build/result1.txt
 Multiplication Complete!
-Execution Time: 61 milliseconds
+Execution Time: 45 milliseconds
 
 Number of Processes: 8, Number of Threads: 4
 Output file to: /nfsmnt/120090246/parallel_computing/project2/src/../build/result1.txt
@@ -22,41 +128,41 @@ Execution Time: 34 milliseconds
 Number of Processes: 16, Number of Threads: 2
 Output file to: /nfsmnt/120090246/parallel_computing/project2/src/../build/result1.txt
 Multiplication Complete!
-Execution Time: 47 milliseconds
+Execution Time: 31 milliseconds
 
 Number of Processes: 32, Number of Threads: 1
 Output file to: /nfsmnt/120090246/parallel_computing/project2/src/../build/result1.txt
 Multiplication Complete!
-Execution Time: 108 milliseconds
+Execution Time: 58 milliseconds
 
 MPI + OpenMP + SIMD + Memory Locality Matrix Multiplication (Optimized with -O2)
 Number of Processes: 1, Number of Threads: 32
 Output file to: /nfsmnt/120090246/parallel_computing/project2/src/../build/result2.txt
 Multiplication Complete!
-Execution Time: 172 milliseconds
+Execution Time: 238 milliseconds
 
 Number of Processes: 2, Number of Threads: 16
 Output file to: /nfsmnt/120090246/parallel_computing/project2/src/../build/result2.txt
 Multiplication Complete!
-Execution Time: 238 milliseconds
+Execution Time: 171 milliseconds
 
 Number of Processes: 4, Number of Threads: 8
 Output file to: /nfsmnt/120090246/parallel_computing/project2/src/../build/result2.txt
 Multiplication Complete!
-Execution Time: 195 milliseconds
+Execution Time: 203 milliseconds
 
 Number of Processes: 8, Number of Threads: 4
 Output file to: /nfsmnt/120090246/parallel_computing/project2/src/../build/result2.txt
 Multiplication Complete!
-Execution Time: 317 milliseconds
+Execution Time: 236 milliseconds
 
 Number of Processes: 16, Number of Threads: 2
 Output file to: /nfsmnt/120090246/parallel_computing/project2/src/../build/result2.txt
 Multiplication Complete!
-Execution Time: 420 milliseconds
+Execution Time: 292 milliseconds
 
 Number of Processes: 32, Number of Threads: 1
 Output file to: /nfsmnt/120090246/parallel_computing/project2/src/../build/result2.txt
 Multiplication Complete!
-Execution Time: 887 milliseconds
+Execution Time: 462 milliseconds
 
