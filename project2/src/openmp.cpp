@@ -26,6 +26,24 @@ Matrix matrix_multiply_openmp(const Matrix& matrix1, const Matrix& matrix2) {
     // In addition to SIMD, Memory Locality and Cache Missing,
     // Further Applying OpenMp
 
+#pragma omp parallel for default(none) shared(matrix1, matrix2, result, M, N, K)
+
+    for (size_t i = 0; i < M; ++i) {
+        int * sum = result[i];
+        for (size_t k = 0; k < K; ++k) {
+            __m256i t1 = _mm256_set1_epi32((matrix1[i][k]));
+            const int *p1 = matrix2[k];
+            for (size_t j = 0; j < N; j+=8) {
+                __m256i sum_int = _mm256_loadu_si256((__m256i*)(sum+j));
+                __m256i p1_int = _mm256_loadu_si256((__m256i*)(p1+j));
+                __m256i product_int = _mm256_mullo_epi32(t1, p1_int);
+                __m256i sum_added = _mm256_add_epi32(sum_int, product_int);
+                int * pos = & sum[j];
+                _mm256_storeu_si256((__m256i*)pos, sum_added);
+            }
+        }
+    }
+
     return result;
 }
 

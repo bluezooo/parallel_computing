@@ -18,6 +18,7 @@ Matrix matrix_multiply_locality(const Matrix& matrix1, const Matrix& matrix2) {
     size_t M = matrix1.getRows(), K = matrix1.getCols(), N = matrix2.getCols();
 
     Matrix result(M, N);
+    
 
     // Your Code Here!
     // Optimizing Matrix Multiplication 
@@ -25,6 +26,18 @@ Matrix matrix_multiply_locality(const Matrix& matrix1, const Matrix& matrix2) {
     // Hints:
     // 1. Change the order of the tripple nested loop
     // 2. Apply Tiled Matrix Multiplication
+
+
+    for (size_t i = 0; i < M; ++i) {
+        int * sum = result[i];
+        for (size_t k = 0; k < K; ++k) {
+            int t1 = matrix1[i][k];
+            const int *p1 = matrix2[k];
+            for (size_t j = 0; j < N; ++j) {
+                sum[j] += p1[j] * t1;
+            }
+        }
+    }
 
     return result;
 }

@@ -13,14 +13,13 @@
 #include "matrix.hpp"
 
 #define MASTER 0
+#define TAG_GATHER 0
 
-Matrix matrix_multiply_mpi(const Matrix& matrix1, const Matrix& matrix2) {
-    if (matrix1.getCols() != matrix2.getRows()) {
-        throw std::invalid_argument(
-            "Matrix dimensions are not compatible for multiplication.");
-    }
+Matrix matrix_multiply_mpi(const Matrix& matrix1, const Matrix& matrix2, \
+                size_t start, size_t end, size_t M, size_t K, size_t N) {
 
-    size_t M = matrix1.getRows(), K = matrix1.getCols(), N = matrix2.getCols();
+
+    // size_t M = matrix1.getRows(), K = matrix1.getCols(), N = matrix2.getCols();
 
     Matrix result(M, N);
 
@@ -32,8 +31,28 @@ Matrix matrix_multiply_mpi(const Matrix& matrix1, const Matrix& matrix2) {
     // You can change the argument of the function 
     // for your convenience of task division
 
+    
+#pragma omp parallel for default(none) shared(matrix1, matrix2, result, M, N, K, start, end)
+
+    for (size_t i = start; i < end; i++) {
+        int * sum = result[i];
+        for (size_t k = 0; k < K; ++k) {
+            __m256i t1 = _mm256_set1_epi32((matrix1[i][k]));
+            const int *p1 = matrix2[k];
+            for (size_t j = 0; j < N; j+=8) {
+                __m256i sum_int = _mm256_loadu_si256((__m256i*)(sum+j));
+                __m256i p1_int = _mm256_loadu_si256((__m256i*)(p1+j));
+                __m256i product_int = _mm256_mullo_epi32(t1, p1_int);
+                __m256i sum_added = _mm256_add_epi32(sum_int, product_int);
+                int * pos = & sum[j];
+                _mm256_storeu_si256((__m256i*)pos, sum_added);
+            }
+        }
+    }
+
     return result;
 }
+
 
 int main(int argc, char** argv) {
     // Verify input argument format
@@ -62,20 +81,42 @@ int main(int argc, char** argv) {
 
     // Read Matrix
     const std::string matrix1_path = argv[2];
-
     const std::string matrix2_path = argv[3];
-
     const std::string result_path = argv[4];
 
     Matrix matrix1 = Matrix::loadFromFile(matrix1_path);
-
     Matrix matrix2 = Matrix::loadFromFile(matrix2_path);
+
+    int M = matrix1.getRows();
+    int N = matrix2.getCols();
+    if (matrix1.getCols() != matrix2.getRows()) {
+        throw std::invalid_argument(
+            "Matrix dimensions are not compatible for multiplication.");
+    }
+    int K = matrix1.getCols();
+    int h_per_task = (M + numtasks - 1 )/numtasks;
+    int i = 0;
+    std::vector<int> cuts(numtasks + 1, 0);
+    while (i < numtasks-1){
+        cuts[i+1] = cuts[i]+h_per_task;
+        i++;
+    }
+    cuts[numtasks] = M;
+
 
     auto start_time = std::chrono::high_resolution_clock::now();
     if (taskid == MASTER) {
-        Matrix result = matrix_multiply_mpi(matrix1, matrix2);
 
-        // Your Code Here for Synchronization!
+        Matrix result = matrix_multiply_mpi(matrix1, matrix2, cuts[MASTER], cuts[MASTER+1], M, K, N);
+
+        for (int i = MASTER + 1; i < numtasks; i++) {
+            auto start_row = cuts[i];
+            auto end_row = cuts[i + 1];
+            for (size_t j = start_row; j < end_row; j++) {
+                int* start_pos = result[j];
+                MPI_Recv(start_pos, N, MPI_INT, i, TAG_GATHER, MPI_COMM_WORLD, &status);
+            }
+        }
 
         auto end_time = std::chrono::high_resolution_clock::now();
         auto elapsed_time =
@@ -85,14 +126,18 @@ int main(int argc, char** argv) {
         result.saveToFile(result_path);
 
         std::cout << "Output file to: " << result_path << std::endl;
-
         std::cout << "Multiplication Complete!" << std::endl;
         std::cout << "Execution Time: " << elapsed_time.count()
-                  << " milliseconds" << std::endl;
+                   << " milliseconds" << std::endl;
     } else {
-        Matrix result = matrix_multiply_mpi(matrix1, matrix2);
-
-        // Your Code Here for Synchronization!
+        // std::cout<<taskid<<std::endl;
+        auto start = cuts[taskid];
+        auto end = cuts[taskid + 1];
+        Matrix result = matrix_multiply_mpi(matrix1, matrix2, start, end, M, K, N);
+        for(int i = cuts[taskid]; i < cuts[taskid+1]; i++){
+            int * ptr = result[i];
+            MPI_Send(ptr , N , MPI_INT , MASTER , TAG_GATHER , MPI_COMM_WORLD);
+        }
     }
 
     MPI_Finalize();

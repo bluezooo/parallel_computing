@@ -37,10 +37,17 @@ target_compile_options(openmp PRIVATE -O2 -fopenmp -mavx2)
 target_include_directories(openmp PRIVATE ${OpenMP_CXX_INCLUDE_DIRS})
 target_link_libraries(openmp PRIVATE ${OpenMP_CXX_LIBRARIES})
 
-## MPI
+# ## MPI
 add_executable(mpi
         mpi.cpp
         matrix.cpp matrix.hpp)
 target_compile_options(mpi PRIVATE -O2 -fopenmp -mavx2)
 target_include_directories(mpi PRIVATE ${MPI_CXX_INCLUDE_DIRS} ${OpenMP_CXX_INCLUDE_DIRS})
 target_link_libraries(mpi ${MPI_LIBRARIES} ${OpenMP_CXX_LIBRARIES})
+
+
+
+
+# Enable programs to include matrix.hpp with no directory prefix
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}")
+add_subdirectory(gpu)

@@ -35,6 +35,8 @@ int* Matrix::operator[](size_t rowIndex) {
     if (rowIndex < rows) {
         return data[rowIndex];
     } else {
+        // std::cout<<rowIndex<<std::endl;
+        // return NULL  ;      
         throw std::out_of_range("Row index out of range");
     }
 }
