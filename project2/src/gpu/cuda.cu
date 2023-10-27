@@ -6,22 +6,27 @@
 // CUDA kernel functon
 
 
-__global__ Matrix matrix_multiply(const Matrix& matrix1_in, const Matrix& matrix2_in, const Matrix& result_out,  int K) {
+__global__ void matrix_multiply(const int * d_A, const int * d_B, int * d_C, int M, int K, int N) {
     int row = blockIdx.x * blockDim.x + threadIdx.x;
     int col = blockIdx.y * blockDim.y + threadIdx.y;
-    for (size_t k = 0; k < K; ++k) {
-        result_out[row][col] += matrix1_in[row][k] * matrix2_in[k][col];
+    if (row < M && col < N){
+        const int * d_A_ptr = &d_A[row*K];
+        const int * d_B_ptr = &d_B[col*N];
+        int * d_C_ptr = &d_C[row*N];
+        int sum = 0;
+        for (int k = 0; k < K; k++) {
+           sum += *(d_A_ptr+k) * *(d_B_ptr+k);
+        }
+        *(d_C_ptr + col) = sum;
     }
-    return result;
+
 }
 
 int main(int argc, char** argv)
 {
     // Verify input argument format
     if (argc != 4) {
-        throw std::invalid_argument(
-            "Invalid argument, should be: ./executable "
-            "/path/to/matrix1 /path/to/matrix2 /path/to/multiply_result\n");
+        std::cerr << "Invalid argument, should be: ./executable \n"<<  "/path/to/matrix1 /path/to/matrix2 /path/to/multiply_result\n";
     }
     const std::string matrix1_path = argv[1];
     const std::string matrix2_path = argv[2];
@@ -29,54 +34,66 @@ int main(int argc, char** argv)
     Matrix matrix1 = Matrix::loadFromFile(matrix1_path);
     Matrix matrix2 = Matrix::loadFromFile(matrix2_path);
     if (matrix1.getCols() != matrix2.getRows()) {
-        throw std::invalid_argument(
-            "Matrix dimensions are not compatible for multiplication.");
+        std::cerr<<"Matrix dimensions are not compatible for multiplication.";
     }
 
-    size_t M = matrix1.getRows(), K = matrix1.getCols(), N = matrix2.getCols();
+    int M = matrix1.getRows(), K = matrix1.getCols(), N = matrix2.getCols();
 
+    // Get the transpose of matrix2
+    Matrix matrix2_transpose = Matrix(N, K);
+    for (size_t i = 0; i < N; ++i) {
+        for (size_t j = 0; j < K; ++j) {
+            matrix2_transpose[i][j] = matrix2[j][i];
+        }
+    }
 
     // Allocate memory on host (CPU)
     Matrix result = Matrix(M, N);
     // Allocate memory on device (GPU)
-    int * matrix1_in;
-    int * matrix2_in;
-    int * result_out;
-    int * K_in;
 
-    cudaMalloc((void**)&matrix1_in, M*K * sizeof(int));
-    cudaMalloc((void**)&matrix2_in, K*N * sizeof(int));
-    cudaMalloc((void**)&K_in, sizeof(int));
+    int *d_A, *d_B, *d_C;
+    int sizeA = M *K * sizeof(int);
+    int sizeB = K* N * sizeof(int);
+    int sizeC = M *N * sizeof(int);
 
-    cudaMemcpy(matrix1_in, matrix1, M*K * sizeof(int),cudaMemcpyHostToDevice);
-    cudaMemcpy(matrix2_in, matrix2, K*N * sizeof(int),cudaMemcpyHostToDevice);
-    cudaMemcpy(K_in, K, sizeof(int),cudaMemcpyHostToDevice);
+    cudaMalloc((void**)&d_A, sizeA);
+    cudaMalloc((void**)&d_B, sizeB);
+    cudaMalloc((void**)&d_C, sizeC);
+
+
+    for (int i = 0; i < M; ++i){
+        cudaMemcpy(&d_A[i * K], matrix1[i], K * sizeof(int), cudaMemcpyHostToDevice);
+    }
+    for (int i = 0; i < N; ++i){
+        cudaMemcpy(&d_B[i * K], matrix2_transpose[i], K * sizeof(int), cudaMemcpyHostToDevice);
+    }
 
     cudaEvent_t start, stop;
     float gpuDuration;
     cudaEventCreate(&start);
     cudaEventCreate(&stop);
 
-    dim3 numBlocks((M + 15)/ 16, (N +15) / 16); 
-	dim3 blockSize(16, 16);
+    dim3 numBlocks((M + 7)/ 8, (N +7) / 8); 
+	dim3 blockSize(8, 8);
     
     cudaEventRecord(start, 0); // GPU start time
-    matrix_multiply<<<numBlocks, blockSize>>>(matrix1_in, matrix2_in, result_out, K_in);
+    matrix_multiply<<<numBlocks, blockSize>>>(d_A, d_B, d_C, M, K, N);
     cudaEventRecord(stop, 0); // GPU end time
     cudaEventSynchronize(stop);
 
     // Print the result of the GPU computation
     cudaEventElapsedTime(&gpuDuration, start, stop);
     // Copy output data from device to host
-    cudaMemcpy(result, result_out, M*N * sizeof(int),cudaMemcpyDeviceToHost);
-    
+    for (int i = 0; i < M; ++i){
+        cudaMemcpy(result[i], &d_C[i*N], N * sizeof(int), cudaMemcpyDeviceToHost);
+    }
     result.saveToFile(result_path);
     std::cout << "Output file to: " << result_path << std::endl;
 
     // Release allocated memory on device and host
-    cudaFree(matrix1_in);
-    cudaFree(matrix2_in);
-    cudaFree(result_out);
+    cudaFree(d_A);
+    cudaFree(d_B);
+    cudaFree(d_C);
     // delete matrix1;
     // delete matrix2;
     // delete result;
