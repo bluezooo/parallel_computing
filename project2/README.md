@@ -128,15 +128,15 @@ Performance measured as execution time in **milliseconds**.
 
 ##### CPU cycles
 
-![image-20231027192419639](images\image-20231027192419639.png)
+![image-20231027192419639](images/image-20231027192419639.png)
 
 ##### cache misses
 
-![image-20231027192615822](images\image-20231027192615822.png)
+![image-20231027192615822](images/image-20231027192615822.png)
 
 ##### page faults
 
-![image-20231027192656067](images\image-20231027192656067.png)
+![image-20231027192656067](images/image-20231027192656067.png)
 
 
 
@@ -144,19 +144,19 @@ Performance measured as execution time in **milliseconds**.
 
 ##### CPU cycles
 
-![](images\image-20231027192842028.png)
+![](images/image-20231027192842028.png)
 
 ##### cache misses
 
-![](images\image-20231027192933425.png)
+![](images/image-20231027192933425.png)
 
-![image-20231027194156328](images\image-20231027194156328.png)
+![image-20231027194156328](images/image-20231027194156328.png)
 
 By arranging the order of the loop and using pointer for better access to the data, the cache misses of **`Matrix::operator[]`** is significantly decreasing, from **39.91%** to **0.05%**, which means we access data more efficiently.
 
 ##### page faults
 
-![](images\image-20231027192957995.png)
+![](images/image-20231027192957995.png)
 
 
 
@@ -164,15 +164,15 @@ By arranging the order of the loop and using pointer for better access to the da
 
 ##### CPU cycles
 
-![](images\image-20231027193106974.png)
+![](images/image-20231027193106974.png)
 
 ##### cache misses
 
-![](images\image-20231027193209797.png)
+![](images/image-20231027193209797.png)
 
 ##### page faults
 
-![](images\image-20231027193229008.png)
+![](images/image-20231027193229008.png)
 
 It is obvious that by using `SIMD`, we significantly decrease the CPU cycles, because that the proportion of multiplication decreases from **`79.58%`** to **` 54.32%`** , while the total CPU cycles is decreasing.
 
@@ -180,15 +180,15 @@ It is obvious that by using `SIMD`, we significantly decrease the CPU cycles, be
 
 ##### CPU cycles
 
-![](images\image-20231027193522699.png)
+![](images/image-20231027193522699.png)
 
 ##### cache misses
 
-![](images\image-20231027193633970.png)
+![](images/image-20231027193633970.png)
 
 ##### page faults
 
-![](images\image-20231027193721556.png)
+![](images/image-20231027193721556.png)
 
 
 
@@ -196,12 +196,12 @@ It is obvious that by using `SIMD`, we significantly decrease the CPU cycles, be
 
 ##### CPU cycles
 
-![](images\image-20231027195228349.png)
+![](images/image-20231027195228349.png)
 
 ##### cache misses
 
-![](images\image-20231027195250623.png)
+![](images/image-20231027195250623.png)
 
 ##### page faults
 
-![](images\image-20231027195314903.png)
+![](images/image-20231027195314903.png)
