@@ -1,0 +1,32 @@
+Quick Sort MPI (Optimized with -O2)
+Number of cores: 1
+Quick Sort Complete!
+Execution Time: 13337 milliseconds
+std::sort Time: 12090 milliseconds
+Pass the sorting result check!
+Number of cores: 2
+Quick Sort Complete!
+Execution Time: 10777 milliseconds
+std::sort Time: 16200 milliseconds
+Pass the sorting result check!
+Number of cores: 4
+Quick Sort Complete!
+Execution Time: 6767 milliseconds
+std::sort Time: 16123 milliseconds
+Pass the sorting result check!
+Number of cores: 8
+Quick Sort Complete!
+Execution Time: 5781 milliseconds
+std::sort Time: 16128 milliseconds
+Pass the sorting result check!
+Number of cores: 16
+Quick Sort Complete!
+Execution Time: 7112 milliseconds
+std::sort Time: 16245 milliseconds
+Pass the sorting result check!
+Number of cores: 32
+Quick Sort Complete!
+Execution Time: 10588 milliseconds
+std::sort Time: 16273 milliseconds
+Pass the sorting result check!
+
