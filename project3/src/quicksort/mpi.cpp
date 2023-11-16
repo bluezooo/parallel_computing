@@ -64,6 +64,8 @@ void quickSort(std::vector<int>& vec, int numtasks, int taskid, MPI_Status* stat
         }
         //merge the k sorted arrays, each from cuts[i] to cuts[i+1] -1
         std::vector<int> vec_clone = vec;
+        
+        // if (numtasks < 16){
         std::vector <int>::iterator it = vec.begin();
         while (it != vec.end()){
             int min = std::numeric_limits<int>::max();
@@ -81,6 +83,10 @@ void quickSort(std::vector<int>& vec, int numtasks, int taskid, MPI_Status* stat
             * it = min;
             it++;
         }
+        // }else{
+
+        // }
+
     }
     else{
         int * ptr = &vec[cuts[taskid]];

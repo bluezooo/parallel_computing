@@ -140,7 +140,8 @@ int main(int argc, char** argv) {
         auto end = cuts[taskid + 1];
         Matrix result = matrix_multiply_mpi(matrix1, matrix2, start, end, M, K, N);
         for(int i = cuts[taskid]; i < cuts[taskid+1]; i++){
-            int * ptr = result[i-cuts[taskid]];
+            int * ptr = r
+            esult[i-cuts[taskid]];
             MPI_Send(ptr , N , MPI_INT , MASTER , TAG_GATHER , MPI_COMM_WORLD);
         }
     }
