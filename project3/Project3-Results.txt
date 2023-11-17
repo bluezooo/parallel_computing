@@ -85,3 +85,30 @@ Odd-Even Sort Complete!
 Execution Time: 40959 milliseconds
 std::sort Time: 16 milliseconds
 Pass the sorting result check!
+Number of cores: 2
+Odd-Even Sort Complete!
+Execution Time: 31726 milliseconds
+std::sort Time: 21 milliseconds
+Pass the sorting result check!
+Number of cores: 4
+Odd-Even Sort Complete!
+Execution Time: 19916 milliseconds
+std::sort Time: 21 milliseconds
+Pass the sorting result check!
+Number of cores: 8
+Odd-Even Sort Complete!
+Execution Time: 11709 milliseconds
+std::sort Time: 21 milliseconds
+Pass the sorting result check!
+Number of cores: 16
+Odd-Even Sort Complete!
+Execution Time: 6388 milliseconds
+std::sort Time: 21 milliseconds
+Pass the sorting result check!
+Number of cores: 32
+Odd-Even Sort Complete!
+Execution Time: 3347 milliseconds
+std::sort Time: 21 milliseconds
+Pass the sorting result check!
+
+------profiling----perf--------
