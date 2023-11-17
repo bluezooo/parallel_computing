@@ -13,63 +13,76 @@
 #define MASTER 0
 #define TAG_GATHER 0
 
-void oddEvenSort(std::vector<int>& vec, int numtasks, int taskid, int first, int last, MPI_Status* status) {
-    /* Your code here!
-       Implement parallel odd-even sort with MPI
-    */
+void oddEvenSort(std::vector<int>& vec, std::vector<int>& cuts, int numtasks, int taskid, int first, int last, int size, MPI_Status* status) {
 
+    int recv_start, recv_end;
+    int index = 0;
 
-    if (taskid == MASTER) {
+    while (index < size) {
+        int start_mod = first % 2;
+        int end_mod = last % 2;
 
-
-
-        int all_sorted = 0;
-        while (!all_sorted){
-            all_sorted =1;
-
-            // Perform the odd phase
-            for (int i = first+1; i <= last - 1; i += 2) {
+        // Perform the odd phase
+        if (index % 2 != 0) {
+            for (int i = first + start_mod; i < last; i += 2) {
                 if (vec[i] > vec[i + 1]) {
                     std::swap(vec[i], vec[i + 1]);
-                    all_sorted = 0;
                 }
             }
 
-            // Perform the even phase
-            for (int i = first; i <= last - 1; i += 2) {
-                if (vec[i] > vec[i + 1]) {
-                    std::swap(vec[i], vec[i + 1]);
-                    all_sorted = 0;
+            if (start_mod == 0 && taskid != 0) {
+                MPI_Sendrecv(&vec[first], 1, MPI_INT, taskid - 1, 2* taskid-1,
+                             &recv_start, 1, MPI_INT, taskid - 1, 2*taskid -1, MPI_COMM_WORLD, status);
+                if (recv_start > vec[first]) {
+                    vec[first] = recv_start;
                 }
             }
-
-
-
-
+            if (end_mod != 0 && taskid != numtasks-1) {
+                MPI_Sendrecv(&vec[last], 1, MPI_INT, taskid + 1, 2 * taskid+1,
+                             &recv_end, 1, MPI_INT, taskid + 1, 2* taskid+1,MPI_COMM_WORLD, status);
+                if (recv_end < vec[last]) {
+                    vec[last] = recv_end;
+                }
+            }
         }
-    }
-    else{
-            int sorted = 1;
-            // Perform the odd phase
-            for (int i = first+1; i <= last - 1; i += 2) {
+
+        // Perform the even phase
+        else {
+            for (int i = first + 1 - start_mod; i < last; i += 2) {
                 if (vec[i] > vec[i + 1]) {
                     std::swap(vec[i], vec[i + 1]);
-                    all_sorted = 0;
                 }
             }
-
-            // Perform the even phase
-            for (int i = first; i <= last - 1; i += 2) {
-                if (vec[i] > vec[i + 1]) {
-                    std::swap(vec[i], vec[i + 1]);
-                    all_sorted = 0;
+            
+            if (start_mod != 0 && taskid != 0) {
+                MPI_Sendrecv(&vec[first], 1, MPI_INT, taskid - 1, 2*taskid-1,
+                             &recv_start, 1, MPI_INT, taskid - 1, 2*taskid-1, MPI_COMM_WORLD, status);
+                if (recv_start > vec[first]) {
+                    vec[first] = recv_start;
                 }
             }
-            int * sorted_buf = &sorted;
-            MPI_Send(sorted_buf, 1, MPI_INT , 0, 0, MPI_COMM_WORLD);
-
+            if (end_mod == 0 && taskid != numtasks-1) {
+                MPI_Sendrecv(&vec[last], 1, MPI_INT, taskid + 1, 2 * taskid+1,
+                             &recv_end, 1, MPI_INT, taskid + 1, 2 * taskid+1, MPI_COMM_WORLD, status);
+                if (recv_end < vec[last]) {
+                    vec[last] = recv_end;
+                }
+            }
+        }
+        index ++;
     }
-
+    
+    if (taskid == MASTER) {
+        for (int i = MASTER + 1; i < numtasks; i ++) {
+            int * start_pos = &vec[cuts[i]];
+            int length = last + 1 - first;
+            MPI_Recv(start_pos, length, MPI_INT, i, 0, MPI_COMM_WORLD, status);
+        }
+    } else {
+        int* start_pos = &vec[first];
+        int length = last + 1 - first;
+        MPI_Send(start_pos, length, MPI_INT, MASTER, 0, MPI_COMM_WORLD);
+    }
 }
 
 int main(int argc, char** argv) {
@@ -79,7 +92,7 @@ int main(int argc, char** argv) {
             "Invalid argument, should be: ./executable vector_size\n"
             );
     }
-    // Start the MPI
+    // first the MPI
     MPI_Init(&argc, &argv);
     // How many processes are running
     int numtasks;
@@ -101,7 +114,7 @@ int main(int argc, char** argv) {
     std::vector<int> vec_clone = vec;
 
     int i = 0;
-    int size = vec.size();
+    // int size = vec.size();
     int length_per_task = (size + numtasks - 1 )/numtasks;
     std::vector<int> cuts(numtasks + 1, 0);
     while (i < numtasks-1){
@@ -118,7 +131,7 @@ int main(int argc, char** argv) {
 
     auto start_time = std::chrono::high_resolution_clock::now();
 
-    oddEvenSort(vec, numtasks, taskid, first, last, &status);
+    oddEvenSort(vec, cuts, numtasks, taskid, first, last, size, &status);
 
     if (taskid == MASTER) {
         auto end_time = std::chrono::high_resolution_clock::now();

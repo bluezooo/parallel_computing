@@ -39,26 +39,7 @@ void bucketSort(std::vector<int>& vec, int num_buckets, int numtasks, int taskid
     int large_bucket_num = range - small_bucket_size * num_buckets;
     int boundary = min_val + large_bucket_num * large_bucket_size;
 
-    std::vector<std::vector<int>> buckets(num_buckets);
-    // Pre-allocate space to avoid re-allocation
-    for (std::vector<int>& bucket : buckets) {
-        bucket.reserve(large_bucket_size);
-    }
 
-    // Place each element in the appropriate bucket
-    for (int num : vec) {
-        int index;
-        if (num < boundary) {
-            index = (num - min_val) / large_bucket_size;
-        } else {
-            index = large_bucket_num + (num - boundary) / small_bucket_size;
-        }
-        if (index >= num_buckets) {
-            // Handle elements at the upper bound
-            index = num_buckets - 1;
-        }
-        buckets[index].push_back(num);
-    }
 
 
     int i = 0;
@@ -80,6 +61,30 @@ void bucketSort(std::vector<int>& vec, int num_buckets, int numtasks, int taskid
     //     bucket_index ++;
     // }
 
+    std::vector<std::vector<int>> buckets(num_buckets);
+    // Pre-allocate space to avoid re-allocation
+    for (std::vector<int>& bucket : buckets) {
+        bucket.reserve(large_bucket_size);
+    }
+
+    // Place each element in the appropriate bucket
+    for (int num : vec) {
+        int index;
+        if (num < boundary) {
+            index = (num - min_val) / large_bucket_size;
+        } else {
+            index = large_bucket_num + (num - boundary) / small_bucket_size;
+        }
+        if (index >= num_buckets) {
+            index = num_buckets - 1;
+        }
+
+        if (index < cuts[taskid+1] && index>= cuts[taskid] ){
+            buckets[index].push_back(num);
+        }
+    }
+
+    
 
     if (taskid == MASTER){
         for (int j = cuts[taskid]; j<cuts[taskid+1]; j++){
