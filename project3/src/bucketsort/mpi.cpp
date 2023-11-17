@@ -79,34 +79,50 @@ void bucketSort(std::vector<int>& vec, int num_buckets, int numtasks, int taskid
     //     }
     //     bucket_index ++;
     // }
-    for (int j = cuts[taskid]; j<cuts[taskid+1]; j++){
-        insertionSort(buckets[j]);
-        // std::cout<<buckets[j].size()<<std::endl;
-    }
+
 
     if (taskid == MASTER){
-        for (int i = MASTER + 1; i < numtasks; i++) {
-            for (int j = cuts[i]; j < cuts[i+1]; j++){
-                int* start_pos = &buckets[j][0];
-                MPI_Recv(start_pos, buckets[j].size(), MPI_INT, i, TAG_GATHER, MPI_COMM_WORLD, status);
-            }
+        for (int j = cuts[taskid]; j<cuts[taskid+1]; j++){
+            insertionSort(buckets[j]);
         }
 
-        // Combine sorted buckets to get the final sorted array
         int index = 0;
-        for (const std::vector<int>& bucket : buckets) {
-            for (int num : bucket) {
+        for (int j = cuts[taskid]; j<cuts[taskid+1]; j++){
+            for (int num : buckets[j]) {
                 vec[index++] = num;
             }
         }
-    }
-    else{
-        for (int j = cuts[taskid]; j < cuts[taskid+1]; j++){
-            int* start_pos = &buckets[j][0];
-            MPI_Send(start_pos, buckets[j].size(), MPI_INT , MASTER , TAG_GATHER , MPI_COMM_WORLD);
+
+        int length = 0;
+        int * length_buf = &length;
+        for (int i = MASTER + 1; i < numtasks; i++) {
+            int * start_pos = &vec[index];
+            MPI_Recv(length_buf, 1, MPI_INT ,i, 0, MPI_COMM_WORLD, status);
+            MPI_Recv(start_pos, length, MPI_INT, i, 0, MPI_COMM_WORLD, status);
+            index+=length;
         }
     }
+    else{
+        int length = 0;
+        for (int j = cuts[taskid]; j<cuts[taskid+1]; j++){
+            length += buckets[j].size();
+            insertionSort(buckets[j]);
+        }
+
+        std::vector<int> current_vec(length);
+        int index = 0;
+        for (int j = cuts[taskid]; j<cuts[taskid+1]; j++){
+            for (int num : buckets[j]) {
+                current_vec[index++] = num;
+            }
+        }
+        int * length_ptr = &length;
+        MPI_Send(length_ptr, 1, MPI_INT, 0, 0, MPI_COMM_WORLD);
+        int * current_vec_ptr = &current_vec[0];
+        MPI_Send(current_vec_ptr, length, MPI_INT , 0, 0, MPI_COMM_WORLD);
+    }
 }
+
 int main(int argc, char** argv) {
     // Verify input argument format
     if (argc != 3) {

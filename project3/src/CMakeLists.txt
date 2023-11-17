@@ -8,4 +8,4 @@ add_subdirectory(quicksort)
 add_subdirectory(bucketsort)
 
 ## Odd-Even Sort
-add_subdirectory(odd-even-sort)
+# add_subdirectory(odd-even-sort)

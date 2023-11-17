@@ -1,32 +1,105 @@
 Number of cores: 1
 Bucket Sort Complete!
-Execution Time: 23114 milliseconds
-std::sort Time: 11832 milliseconds
+Execution Time: 11841 milliseconds
+std::sort Time: 11861 milliseconds
 Pass the sorting result check!
 Number of cores: 2
 Bucket Sort Complete!
-Execution Time: 25711 milliseconds
-std::sort Time: 15152 milliseconds
+Execution Time: 12845 milliseconds
+std::sort Time: 15329 milliseconds
 Pass the sorting result check!
 Number of cores: 4
 Bucket Sort Complete!
-Execution Time: 37639 milliseconds
-std::sort Time: 15138 milliseconds
+Execution Time: 10709 milliseconds
+std::sort Time: 15238 milliseconds
 Pass the sorting result check!
 Number of cores: 8
 Bucket Sort Complete!
-Execution Time: 52991 milliseconds
-std::sort Time: 15083 milliseconds
+Execution Time: 11608 milliseconds
+std::sort Time: 15181 milliseconds
 Pass the sorting result check!
 Number of cores: 16
 Bucket Sort Complete!
-Execution Time: 66696 milliseconds
-std::sort Time: 15186 milliseconds
+Execution Time: 12256 milliseconds
+std::sort Time: 15297 milliseconds
 Pass the sorting result check!
 Number of cores: 32
 Bucket Sort Complete!
-Execution Time: 64049 milliseconds
-std::sort Time: 15229 milliseconds
+Execution Time: 18430 milliseconds
+std::sort Time: 15337 milliseconds
+Pass the sorting result check!
+
+
+Number of cores: 1
+Bucket Sort Complete!
+Execution Time: 9414 milliseconds
+std::sort Time: 11861 milliseconds
+Pass the sorting result check!
+Number of cores: 2
+Bucket Sort Complete!
+Execution Time: 10765 milliseconds
+std::sort Time: 15233 milliseconds
+Pass the sorting result check!
+Number of cores: 4
+Bucket Sort Complete!
+Execution Time: 9929 milliseconds
+std::sort Time: 15266 milliseconds
+Pass the sorting result check!
+Number of cores: 8
+Bucket Sort Complete!
+Execution Time: 9959 milliseconds
+std::sort Time: 15193 milliseconds
+Pass the sorting result check!
+Number of cores: 16
+Bucket Sort Complete!
+Execution Time: 10846 milliseconds
+std::sort Time: 15305 milliseconds
+Pass the sorting result check!
+Number of cores: 32
+Bucket Sort Complete!
+Execution Time: 18376 milliseconds
+std::sort Time: 15329 milliseconds
 Pass the sorting result check!
 
 Number of cores: 1
+Bucket Sort Complete!
+Execution Time: 9129 milliseconds
+std::sort Time: 11864 milliseconds
+Pass the sorting result check!
+Number of cores: 2
+Bucket Sort Complete!
+Execution Time: 10395 milliseconds
+std::sort Time: 15233 milliseconds
+Pass the sorting result check!
+Number of cores: 4
+Bucket Sort Complete!
+Execution Time: 9776 milliseconds
+std::sort Time: 15258 milliseconds
+Pass the sorting result check!
+Number of cores: 8
+Bucket Sort Complete!
+Execution Time: 10175 milliseconds
+std::sort Time: 15177 milliseconds
+Pass the sorting result check!
+Number of cores: 16
+Bucket Sort Complete!
+Execution Time: 11235 milliseconds
+std::sort Time: 15314 milliseconds
+Pass the sorting result check!
+Number of cores: 32
+Bucket Sort Complete!
+Execution Time: 19281 milliseconds
+std::sort Time: 15347 milliseconds
+Pass the sorting result check!
+
+Number of cores: 1
+Bucket Sort Complete!
+Execution Time: 9379 milliseconds
+std::sort Time: 11865 milliseconds
+Pass the sorting result check!
+Number of cores: 2
+Bucket Sort Complete!
+Execution Time: 10865 milliseconds
+slurmstepd: error: *** JOB 177527 ON node22 CANCELLED AT 2023-11-17T21:03:26 DUE TO TIME LIMIT ***
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+slurmstepd: error: *** STEP 177527.19 ON node22 CANCELLED AT 2023-11-17T21:03:26 DUE TO TIME LIMIT ***

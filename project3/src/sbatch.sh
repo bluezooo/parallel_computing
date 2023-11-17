@@ -28,30 +28,37 @@
 # MPI
 
 
+# for num_cores in 1 2 4 8 16 32
+# do
+#   echo "Number of cores: $num_cores"
+#   srun -n $num_cores --cpus-per-task 1 --mpi=pmi2 /nfsmnt/120090246/parallel_computing/project3/build/src/bucketsort/bucketsort_mpi 100000000 200000
+# done
+# echo ""
 for num_cores in 1 2 4 8 16 32
 do
   echo "Number of cores: $num_cores"
-  srun -n $num_cores --cpus-per-task 1 --mpi=pmi2 /nfsmnt/120090246/parallel_computing/project3/build/src/bucketsort/bucketsort_mpi 100000000 100000
+  srun -n $num_cores --cpus-per-task 1 --mpi=pmi2 /nfsmnt/120090246/parallel_computing/project3/build/src/bucketsort/bucketsort_mpi 100000000 500000
 done
 echo ""
-for num_cores in 1 2 4 8 16 32
-do
-  echo "Number of cores: $num_cores"
-  srun -n $num_cores --cpus-per-task 1 --mpi=pmi2 /nfsmnt/120090246/parallel_computing/project3/build/src/bucketsort/bucketsort_mpi 100000000 300000
-done
-echo ""
 echo ""
 for num_cores in 1 2 4 8 16 32
 do
   echo "Number of cores: $num_cores"
-  srun -n $num_cores --cpus-per-task 1 --mpi=pmi2 /nfsmnt/120090246/parallel_computing/project3/build/src/bucketsort/bucketsort_mpi 100000000 1000000
+  srun -n $num_cores --cpus-per-task 1 --mpi=pmi2 /nfsmnt/120090246/parallel_computing/project3/build/src/bucketsort/bucketsort_mpi 100000000 2000000
 done
 echo ""
 
 for num_cores in 1 2 4 8 16 32
 do
   echo "Number of cores: $num_cores"
-  srun -n $num_cores --cpus-per-task 1 --mpi=pmi2 /nfsmnt/120090246/parallel_computing/project3/build/src/bucketsort/bucketsort_mpi 100000000 3000000
+  srun -n $num_cores --cpus-per-task 1 --mpi=pmi2 /nfsmnt/120090246/parallel_computing/project3/build/src/bucketsort/bucketsort_mpi 100000000 4000000
+done
+echo ""
+
+for num_cores in 1 2 4 8 16 32
+do
+  echo "Number of cores: $num_cores"
+  srun -n $num_cores --cpus-per-task 1 --mpi=pmi2 /nfsmnt/120090246/parallel_computing/project3/build/src/bucketsort/bucketsort_mpi 100000000 8000000
 done
 echo ""
 # # Odd-Even Sort
